@@ -1,5 +1,8 @@
 #!/usr/bin/env perl
 
+# ABSTRACT: REST CLIo
+# PODNAME: rest-cli
+
 use App::REST::CLI;
 
 App::REST::CLI->run;
