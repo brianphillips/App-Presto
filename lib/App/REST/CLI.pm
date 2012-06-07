@@ -5,6 +5,16 @@ package App::REST::CLI;
 use Moo;
 use App::REST::CLI::CommandFactory;
 use App::REST::CLI::Config;
+use App::REST::CLI::Client;
+
+has client => (
+	is       => 'lazy',
+);
+
+sub _build_client {
+	my $self = shift;
+	return App::REST::CLI::Client->new;
+}
 
 has config => (
 	is       => 'lazy',
@@ -14,10 +24,10 @@ sub _build_config {
 	my $self = shift;
 	return App::REST::CLI::Config->new;
 }
+
 has term => (
 	is => 'lazy',
 );
-
 sub _build_term {
 	my $self = shift;
 	return Term::ShellUI->new( commands => {});
