@@ -31,6 +31,10 @@ sub instance {
 sub run {
 	my $class = shift;
 	my $self = $class->instance;
+	my @args  = shift;
+	if(my $endpoint = shift(@args)){
+		$self->config->set( endpoint => $endpoint );
+	}
 	my $command_factory = App::REST::CLI::CommandFactory->new;
 	$command_factory->install_commands($self);
 	return $self->term->run;

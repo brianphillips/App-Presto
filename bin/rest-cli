@@ -5,4 +5,4 @@
 
 use App::REST::CLI;
 
-App::REST::CLI->run;
+App::REST::CLI->run(@ARGV);
