@@ -26,7 +26,7 @@ sub _build_term {
 my $SINGLETON;
 sub instance {
 	my $class = shift;
-	return $SINGLETON || $class->new(@_);
+	return $SINGLETON ||= $class->new(@_);
 }
 sub run {
 	my $class = shift;
