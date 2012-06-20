@@ -57,7 +57,7 @@ sub _make_uri {
     my @args      = @_;
     my $context   = $self->context;
 
-    my $endpoint = $context->config->get('endpoint');
+    my $endpoint = $context->config->endpoint;
     $endpoint .= '*' unless $endpoint =~ m/\*/;
     $endpoint =~ s{\*}{$local_uri};
 
