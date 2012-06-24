@@ -4,6 +4,8 @@ use strict;
 use warnings;
 use Moo;
 use REST::Client;
+use URI;
+use URI::QueryParam;
 
 has context => ( is => 'lazy' );
 sub _build_context {

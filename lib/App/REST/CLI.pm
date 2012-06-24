@@ -62,7 +62,7 @@ sub _build_term {
                 doc => "Specify a number to list the last N lines of history Pass -c to clear the command history, -d NUM to delete a single item\n",
             },
         },
-        prompt       => sprintf( '%s >', $self->endpoint ),
+        prompt       => sprintf( '%s> ', $self->endpoint ),
         history_file => $self->config->file('history'),
     );
 }
