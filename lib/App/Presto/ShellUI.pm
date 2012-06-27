@@ -1,4 +1,4 @@
-package App::REST::CLI::ShellUI;
+package App::Presto::ShellUI;
 
 use strict;
 use warnings;

@@ -1,4 +1,4 @@
-package App::REST::CLI::Client;
+package App::Presto::Client;
 
 use strict;
 use warnings;
@@ -9,8 +9,8 @@ use URI::QueryParam;
 
 has context => ( is => 'lazy' );
 sub _build_context {
-    require App::REST::CLI;
-    return App::REST::CLI->instance;
+    require App::Presto;
+    return App::Presto->instance;
 }
 has _rest_client => ( is => 'lazy', );
 sub _build__rest_client {

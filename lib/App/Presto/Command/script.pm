@@ -1,8 +1,8 @@
-package App::REST::CLI::Command::script;
+package App::Presto::Command::script;
 
 use Moo;
 use File::Path qw(make_path);
-with 'App::REST::CLI::InstallableCommand';
+with 'App::Presto::InstallableCommand';
 
 has scripts => ( is => 'lazy' );
 

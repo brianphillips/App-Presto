@@ -1,10 +1,10 @@
-package App::REST::CLI::Command::headers;
+package App::Presto::Command::headers;
 
 use strict;
 use warnings;
 use Moo;
 use MIME::Base64;
-with 'App::REST::CLI::InstallableCommand';
+with 'App::Presto::InstallableCommand';
 
 sub install {
     my $self = shift;
@@ -15,6 +15,8 @@ sub install {
             authorization => {
                 minargs => 2,
                 maxargs => 2,
+                desc => 'Set basic auth username/password',
+                args => [sub { '[username]' },sub { '[password]' } ],
                 proc    => sub {
                     my ( $username, $password ) = @_;
                     $client->set_header(
@@ -25,6 +27,7 @@ sub install {
             },
             type => {
                 minargs => 1,
+                desc => 'Set content-type header',
                 proc    => sub {
                     $client->set_header( 'Content-Type', shift );
                 },
@@ -34,6 +37,7 @@ sub install {
                 alias   => 'header',
             },
             header => {
+                desc => 'get/set/list/clear HTTP headers',
                 proc => sub {
                     my $header = shift;
                     my @args   = @_;
@@ -44,7 +48,7 @@ sub install {
                             printf " - %s: %s\n", $h, $headers{$h};
                         }
                     }
-                    elsif ( $header eq 'clear' ) {
+                    elsif ( $header eq '-clear' ) {
                         $client->clear_headers;
                     }
                     elsif (@args) {      # set
@@ -61,7 +65,13 @@ sub install {
             },
         }
     );
+}
 
+sub help_categories {
+    return {
+        desc => 'Configure various HTTP headers',
+        cmds => [qw(authorization headers type)],
+    };
 }
 
 1;

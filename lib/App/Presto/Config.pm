@@ -1,4 +1,4 @@
-package App::REST::CLI::Config;
+package App::Presto::Config;
 
 use Moo;
 use JSON qw(decode_json encode_json);

@@ -1,12 +1,12 @@
-package App::REST::CLI;
+package App::Presto;
 
 # ABSTRACT: provides CLI for performing REST operations
 
 use Moo;
-use App::REST::CLI::CommandFactory;
-use App::REST::CLI::Config;
-use App::REST::CLI::Client;
-use App::REST::CLI::ShellUI;
+use App::Presto::CommandFactory;
+use App::Presto::Config;
+use App::Presto::Client;
+use App::Presto::ShellUI;
 
 has client => (
 	is       => 'lazy',
@@ -14,7 +14,7 @@ has client => (
 
 sub _build_client {
 	my $self = shift;
-	return App::REST::CLI::Client->new;
+	return App::Presto::Client->new;
 }
 
 has config => (
@@ -24,7 +24,7 @@ has config => (
 
 sub _build_config {
 	my $self = shift;
-	return App::REST::CLI::Config->new;
+	return App::Presto::Config->new;
 }
 
 has term => (
@@ -32,14 +32,15 @@ has term => (
 );
 sub _build_term {
 	my $self = shift;
-    return App::REST::CLI::ShellUI->new(
+		my $help_categories = $self->command_factory->help_categories;
+    return App::Presto::ShellUI->new(
         commands => {
             "help" => {
                 exclude_from_completion => 1,
                 exclude_from_history    => 1,
                 desc                    => "Print helpful information",
-                args => sub { shift->help_args( undef, @_ ); },
-                method => sub { shift->help_call( undef, @_ ); }
+                args => sub { shift->help_args( $help_categories, @_ ); },
+                method => sub { shift->help_call( $help_categories, @_ ); }
             },
             "h" => {
                 alias                   => "help",
@@ -67,6 +68,11 @@ sub _build_term {
     );
 }
 
+has command_factory => (
+	is => 'lazy',
+);
+sub _build_command_factory { return App::Presto::CommandFactory->new }
+
 my $SINGLETON;
 sub instance {
 	my $class = shift;
@@ -77,14 +83,14 @@ sub run {
 	my $self = $class->instance;
 	my @args  = shift;
 	if(my $endpoint = shift(@args)){
-		$self->config( App::REST::CLI::Config->new( endpoint => $endpoint ) );
+		$self->config( App::Presto::Config->new( endpoint => $endpoint ) );
 	} else {
 		die "Base endpoint (i.e. http://some-host.com) must be specified as command-line argument\n";
 	}
-	my $command_factory = App::REST::CLI::CommandFactory->new;
-	$command_factory->install_commands($self);
+	$self->command_factory->install_commands($self);
 
 	return $self->term->run;
 }
 
 1;
+

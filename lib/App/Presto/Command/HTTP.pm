@@ -1,9 +1,9 @@
-package App::REST::CLI::Command::HTTP;
+package App::Presto::Command::HTTP;
 
 use strict;
 use warnings;
 use Moo;
-with 'App::REST::CLI::InstallableCommand';
+with('App::Presto::InstallableCommand', 'App::Presto::CommandHasHelp');
 
 sub install {
     my $self = shift;
@@ -19,6 +19,7 @@ sub install {
                 }
             },
             GET => {
+                desc => 'perform a GET HTTP action',
                 proc => sub {
                     $client->GET(@_);
                     if($config->{verbose} || 1){
@@ -28,6 +29,7 @@ sub install {
                 },
             },
             POST   => {
+                desc => 'perform a POST HTTP action',
                 proc => sub {
                     $client->POST(@_);
                     if($config->{verbose} || 1){
@@ -36,8 +38,12 @@ sub install {
                     }
                 },
             },
-            PUT    => {},
-            DELETE => {},
+            PUT    => {
+                desc => 'perform a PUT HTTP action',
+            },
+            DELETE => {
+                desc => 'perform a DELETE HTTP action',
+            },
         }
     );
 }
@@ -51,6 +57,13 @@ sub _dump_request_response {
 %s
 -----   END    -----
 _OUT_
+}
+
+sub help_categories {
+    return {
+        desc => 'Various HTTP verb commands',
+        cmds => [qw(GET POST PUT DELETE)],
+    };
 }
 
 1;

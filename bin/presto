@@ -1,0 +1,8 @@
+#!/usr/bin/env perl
+
+# ABSTRACT: REST command-line interface
+# PODNAME: presto
+
+use App::Presto;
+
+App::Presto->run(@ARGV);

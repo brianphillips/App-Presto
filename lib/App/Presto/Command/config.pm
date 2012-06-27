@@ -1,15 +1,17 @@
-package App::REST::CLI::Command::config;
+package App::Presto::Command::config;
 
 use Moo;
-with 'App::REST::CLI::InstallableCommand';
+with 'App::Presto::InstallableCommand';
 
 sub install {
     my $self = shift;
     $self->term->add_commands(
         {
             config => {
+                desc => 'get/set config values',
                 minargs => 0,
                 maxargs => 2,
+                args    => [ sub { return [$self->config->keys] } ],
                 proc    => sub {
                     if(@_ == 1){
                         printf "%s=%s\n", $_[0], $self->config->get( $_[0] );
@@ -24,6 +26,13 @@ sub install {
             },
         }
     );
+}
+
+sub help_categories {
+    return {
+        desc => 'Get/Set/List config values',
+        cmds => [qw(config)],
+    };
 }
 
 1;
