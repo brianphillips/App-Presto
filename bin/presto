@@ -18,6 +18,38 @@ Very basic usage:
 	http://my-server.com> GET /product/1.json
 	{"id":1,"name":"My Product"}
 
+	http://my-server.com> HEAD /product/1.json
+	HTTP/1.1 200 OK
+	Connection: close
+	Date: Thu, 28 Jun 2012 21:05:33 GMT
+	Content-Length: 0
+	Content-Type: application/json
+	Client-Date: Thu, 28 Jun 2012 21:05:44 GMT
+	Client-Response-Num: 1
+
+History and scripting support:
+
+	http://my-server.com> history
+	0. GET /product/1.json
+	1. HEAD /product/1.json
+	http://my-server.com> save my-script
+	Save the following 2 commands to script file 'my-script'?
+		GET /product/1.json
+		HEAD /product/1.json
+	Save? (Y/n) Y
+	 * Saved
+	http://my-server.com> source my-script # executes the above two commands
+	...
+	http://my-server.com> source -i my-script # prompts before each command in the script
+	...
+
+Explore inline help:
+
+	http://my-server.com> help
+	...
+	http://my-server.com> help HTTP
+	...
+
 Set some options:
 
 	http://my-server.com> config deserialize_response 1
