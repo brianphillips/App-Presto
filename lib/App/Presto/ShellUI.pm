@@ -17,7 +17,10 @@ sub call_command {
 	my($cmd) = @_;
 	my $args = $cmd->{args};
 	foreach my $i(0..$#{ $args }){
-		if($args->[$i] =~ m{^\$(.+)}){
+		if($args->[$i] =~ m{^#}){
+			splice(@$args, $i); # everything else is a comment
+			last;
+		} elsif($args->[$i] =~ m{^\$(.+)}){
 			$args->[$i] = $self->_expand_param($1);
 		} else {
 			$args->[$i] =~ s[\{\{\$(.+?)\}\}][$self->_expand_param($1)]eg;
