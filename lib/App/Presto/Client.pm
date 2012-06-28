@@ -1,11 +1,14 @@
 package App::Presto::Client;
 
+# ABSTRACT: The REST client
+
 use strict;
 use warnings;
 use Moo;
 use REST::Client;
 use URI;
 use URI::QueryParam;
+use Module::Pluggable instantiate => 'new', sub_name => 'content_handlers', search_path => ['App::Presto::Client::ContentHandlers'];
 
 has context => ( is => 'lazy' );
 sub _build_context {
@@ -47,6 +50,16 @@ sub GET {
     my $uri  = $self->_make_uri(@_);
     $self->_rest_client->GET($uri);
 }
+sub HEAD {
+    my $self = shift;
+    my $uri  = $self->_make_uri(@_);
+    $self->_rest_client->HEAD($uri);
+}
+sub DELETE {
+    my $self = shift;
+    my $uri  = $self->_make_uri(@_);
+    $self->_rest_client->HEAD($uri);
+}
 sub POST {
     my $self = shift;
     my $uri  = $self->_make_uri(shift);
@@ -59,9 +72,14 @@ sub _make_uri {
     my @args      = @_;
     my $context   = $self->context;
 
-    my $endpoint = $context->config->endpoint;
-    $endpoint .= '*' unless $endpoint =~ m/\*/;
-    $endpoint =~ s{\*}{$local_uri};
+    my $endpoint;
+    if($local_uri && $local_uri =~ m{^https?://}){
+        $endpoint = $local_uri;
+    } else {
+        $endpoint = $context->config->endpoint;
+        $endpoint .= '*' unless $endpoint =~ m/\*/;
+        $endpoint =~ s{\*}{$local_uri};
+    }
 
     my $u = $self->_append_query_params( $endpoint, @args );
     return "$u";
@@ -79,6 +97,19 @@ sub _append_query_params {
 
 sub response {
     return shift->_rest_client->{_res} || undef;
+}
+
+sub response_data {
+    my $self = shift;
+    my $response = $self->response;
+    my $content_type = $response->header('Content-type');
+    foreach my $h($self->content_handlers){
+        if($h->can_deserialize( $content_type )){
+            return $h->deserialize( $response->content );
+        }
+    }
+    warn "no available deserializer found for content type: $content_type";
+    return $response->decoded_content;
 }
 
 1;

@@ -1,8 +1,79 @@
 #!/usr/bin/env perl
 
-# ABSTRACT: REST command-line interface
+# ABSTRACT: Command-line interface for RESTful web services
 # PODNAME: presto
 
 use App::Presto;
 
 App::Presto->run(@ARGV);
+
+=head1 SYNOPSIS
+
+Invoke from the shell:
+
+	bash$ presto http://my-server.com
+	
+Very basic usage:
+
+	http://my-server.com> GET /product/1.json
+	{"id":1,"name":"My Product"}
+
+Set some options:
+
+	http://my-server.com> config deserialize_response 1
+	http://my-server.com> config pretty_printer Data::Dump
+	http://my-server.com> GET /product/1.json
+	{
+		"id" => 1,
+		"name" => "My Product"
+	}
+
+See more about the request/response:
+
+	http://my-server.com> config verbose 1
+	http://my-server.com> GET /product/1.json
+	----- REQUEST  -----
+	GET http://my-server.com/product/1.json
+	User-Agent: REST::Client/245
+	Content-Length: 0
+
+
+	----- RESPONSE -----
+	HTTP/1.1 200 OK
+	Connection: close
+	Date: Thu, 28 Jun 2012 20:10:18 GMT
+	Content-Length: 222
+	Content-Type: application/json
+	Client-Date: Thu, 28 Jun 2012 20:10:29 GMT
+	Client-Response-Num: 1
+
+	{"id":1,"name":"My Product"}
+
+	-----   END    -----
+	{
+		"id" => 1,
+		"name" => "My Product"
+	}
+
+Experimental parsing of the response using L<Data::DPath> (a contrived example):
+
+	http://my-server.com> GET /products.json
+	[{"id":"1","name":"My Product"},{"id":"2","name":"Another Product"}]
+
+	http://my-server.com> GET /product/{{$BODY/id[-1]}}.json
+	{"id":2,"name":"Another Product"}
+
+	http://my-server.com> echo $HEADER{Content-type}
+	
+
+=head1 DESCRIPTION
+
+C<App::Presto> provides a command-line interface (CLI) for RESTful web services.
+
+=head1 CAVEAT EMPTOR
+
+This is alpha-quality code and while I use it in my own daily workflow,
+it is likely riddled with horribly obvious bugs and missing functionality
+(let alone undocumented features).
+
+=cut

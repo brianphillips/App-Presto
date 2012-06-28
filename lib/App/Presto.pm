@@ -47,6 +47,10 @@ sub _build_term {
                 exclude_from_completion => 1,
                 exclude_from_history    => 1,
             },
+						echo => {
+							desc => 'Print arguments (possibly interpolated) to the screen',
+							proc => sub { use Data::Dumper; print join ' ', map {ref($_) ? Dumper($_) : $_} @_; print "\n" },
+						},
             quit => {
                 desc                    => "Exits the REST shell",
                 maxargs                 => 0,
@@ -93,4 +97,16 @@ sub run {
 }
 
 1;
+
+=head1 DESCRIPTION
+
+A L<Term::ShellUI>-based CLI for REST web applications.
+
+=head1 SEE ALSO
+
+=over 4
+
+=item * L<presto>
+
+=back
 

@@ -1,5 +1,7 @@
 package App::Presto::InstallableCommand;
 
+# ABSTRACT: Role for command modules that can be installed
+
 use Moo::Role;
 
 has context => (

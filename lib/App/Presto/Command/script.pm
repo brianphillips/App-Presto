@@ -1,8 +1,10 @@
 package App::Presto::Command::script;
 
+# ABSTRACT: REST script-related commands
+
 use Moo;
 use File::Path qw(make_path);
-with 'App::Presto::InstallableCommand';
+with 'App::Presto::InstallableCommand', 'App::Presto::CommandHasHelp';
 
 has scripts => ( is => 'lazy' );
 
@@ -147,6 +149,13 @@ sub _script_commands {
     chomp(my @commands = <$fh>);
     close $fh;
     return @commands;
+}
+
+sub help_categories {
+    return {
+        desc => 'Work with saving and running scripts of commands',
+        cmds => ['save','source'],
+    };
 }
 
 1;

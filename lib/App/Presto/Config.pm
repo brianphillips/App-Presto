@@ -1,5 +1,7 @@
 package App::Presto::Config;
 
+# ABSTRACT: Manage configuration for a given endpoint
+
 use Moo;
 use JSON qw(decode_json encode_json);
 use File::HomeDir;
@@ -67,7 +69,11 @@ sub set {
     if($key eq 'endpoint'){
         return $self->endpoint($value);
     }
-    $self->config->{$key} = $value;
+    if(!defined $value){
+        delete $self->config->{$key};
+    } else {
+        $self->config->{$key} = $value;
+    }
     eval {
         $self->write_config;
         1;
@@ -75,6 +81,10 @@ sub set {
         warn "unable to persist config: $@\n";
     };
     return;
+}
+sub unset {
+    my $self = shift;
+    return $self->set($_[0],undef);
 }
 
 sub get {

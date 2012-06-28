@@ -1,7 +1,9 @@
 package App::Presto::Command::config;
 
+# ABSTRACT: Config-related commands
+
 use Moo;
-with 'App::Presto::InstallableCommand';
+with 'App::Presto::InstallableCommand','App::Presto::CommandHasHelp';
 
 sub install {
     my $self = shift;

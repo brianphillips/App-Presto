@@ -1,10 +1,12 @@
 package App::Presto::Command::headers;
 
+# ABSTRACT: HTTP header-related commands
+
 use strict;
 use warnings;
 use Moo;
 use MIME::Base64;
-with 'App::Presto::InstallableCommand';
+with 'App::Presto::InstallableCommand','App::Presto::CommandHasHelp';
 
 sub install {
     my $self = shift;
