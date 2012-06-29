@@ -27,17 +27,6 @@ Very basic usage:
 	Client-Date: Thu, 28 Jun 2012 21:05:44 GMT
 	Client-Response-Num: 1
 
-Experimental parsing of the response using L<Data::DPath> (a contrived example):
-
-	http://my-server.com> GET /products.json
-	[{"id":"1","name":"My Product"},{"id":"2","name":"Another Product"}]
-
-	http://my-server.com> GET /product/{{$BODY/id[-1]}}.json
-	{"id":2,"name":"Another Product"}
-
-	http://my-server.com> echo $HEADER{Content-type}
-	
-
 =head1 DESCRIPTION
 
 C<App::Presto> provides a command-line interface (CLI) for RESTful web services.
