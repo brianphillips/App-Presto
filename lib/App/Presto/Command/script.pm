@@ -39,9 +39,9 @@ sub install {
             save => {
                 exclude_from_history => 1,
                 desc => 'Save a series of commands from your history to a script file',
-                args => 'file [offset start] [offset end]',
+                args => 'file [offset start]..[offset end]',
                 minargs => 1,
-                maxargs => 3,
+                maxargs => 2,
                 proc    => sub { $self->_save(@_) },
             },
             source => {
@@ -66,14 +66,13 @@ sub _save {
         return;
     }
     my $file    = shift;
-    my @range   = @_;
+    my @range   = split(/\.\./, shift);
     my @history = $self->term->GetHistory;
     if ( @range == 2 ) {
         @history = @history[ $range[0] .. $range[1] ];
-    }
-    elsif ( @range == 1 ) {
-        $range[1] = $range[0] < 0 ? -1 : $#history;
-        @history = @history[ $range[0] .. $range[1] ];
+    } elsif ( @range == 1 ) {
+        $range[0] *= -1 if $range[0] > 0;
+        @history = @history[ $range[0] .. -1 ];
     }
     printf "Save the following %d commands to script file '%s'?\n",
       scalar(@history), $file;

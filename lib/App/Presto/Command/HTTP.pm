@@ -41,11 +41,17 @@ sub install {
             },
             PUT    => {
                 desc => 'perform a PUT HTTP action',
-                proc => 'Not implemented',
+                proc => sub {
+                    $client->PUT(@_);
+                    $self->handle_response($client);
+                },
             },
             DELETE => {
                 desc => 'perform a DELETE HTTP action',
-                proc => 'Not implemented',
+                proc => sub {
+                    $client->DELETE(@_);
+                    $self->handle_response($client);
+                },
             },
             HEAD => {
                 desc => 'perform a HEAD HTTP action',
@@ -98,7 +104,7 @@ sub _deserialize_response {
 sub help_categories {
     return {
         desc => 'Various HTTP verb commands',
-        cmds => [qw(GET POST PUT DELETE)],
+        cmds => [qw(GET POST HEAD PUT DELETE)],
     };
 }
 

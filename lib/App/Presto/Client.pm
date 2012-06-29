@@ -65,6 +65,11 @@ sub POST {
     my $uri  = $self->_make_uri(shift);
     $self->_rest_client->POST($uri, shift);
 }
+sub PUT {
+    my $self = shift;
+    my $uri  = $self->_make_uri(shift);
+    $self->_rest_client->PUT($uri, shift);
+}
 
 sub _make_uri {
     my $self      = shift;
