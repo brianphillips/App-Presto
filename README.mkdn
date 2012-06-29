@@ -1,0 +1,195 @@
+# NAME
+
+presto - Command-line interface for RESTful web services
+
+# VERSION
+
+version 0.001
+
+# SYNOPSIS
+
+Invoke from the shell:
+
+	bash$ presto http://my-server.com
+
+Very basic usage:
+
+	http://my-server.com> GET /product/1.json
+	{"id":1,"name":"My Product"}
+
+	http://my-server.com> HEAD /product/1.json
+	HTTP/1.1 200 OK
+	Connection: close
+	Date: Thu, 28 Jun 2012 21:05:33 GMT
+	Content-Length: 0
+	Content-Type: application/json
+	Client-Date: Thu, 28 Jun 2012 21:05:44 GMT
+	Client-Response-Num: 1
+
+# DESCRIPTION
+
+`App::Presto` provides a command-line interface (CLI) for RESTful web services.
+
+# FEATURES
+
+## Basic HTTP methods
+
+All HTTP methods are implemented as commands in presto.  The URL that is
+given is appended to the endpoint specified when presto is invoked as
+shown in the SYNOPSIS above.
+
+## Request Building
+
+If the endpoint contains a `*` character the URL fragment specified in
+the GET/POST/etc command is inserted at that point. This allows you to
+do things like auto-append a file extension to all URLs.  For instance:
+
+	bash$ presto http://my-server.com*.json
+	http://my-server.com> GET /product/1
+
+In this case, the full URL would be
+`http://my-server.com/product/1.json`.  If no `*` is found in the URL,
+the URL fragment is simply appended at the end of the endpoint.
+
+All arguments after the first will be treated as query parameters (for
+GET/HEAD/DELETE requests) or request content (for POST/PUT requests). For
+instance:
+
+	http://my-server.com> GET /products limit=10 offset=20
+    # request goes to http://my-sever.com/products?limit=10&offset=20
+
+	http://my-server.com> POST /products '{"name":"A New Product"}'
+    # request goes to http://my-sever.com/products with the body as specified
+
+You can also specify additional headers you would like included in the request:
+
+	# the ":" is optional
+	http://my-server.com> header Accept: application/json
+
+	# shortcut for "header Content-Type application/json"
+	http://my-server.com> type application/json
+
+	# shortcut for "header Authorization: Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ==
+	http://my-server.com> authorization Aladdin 'open sesame'
+
+	# view all headers
+	http://my-server.com> headers
+
+	# view specific header
+	http://my-server.com> header Authorization
+
+__TODO:__ Implement better support for creating POST/PUT content.
+
+## Response Handling
+
+By default, presto will just dump the response body to the screen after
+a request is completed. There are additional options, however:
+
+	# dump full request/response to the screen
+	http://my-server.com> config verbose 1
+
+	# parse the response according to the content-type and use
+	# Data::Dumper to display it
+	http://my-server.com> config deserialize_response 1
+
+	# use something other than Data::Dumper to dump a parsed
+	# response body
+	http://my-server.com> config pretty_printer JSON
+	http://my-server.com> config pretty_printer Data::Dump
+
+Pretty-printing can be especially helpful for making XML or JSON response
+bodies more human-readable.
+
+__TODO:__ Implement more deserializers and pretty-printers
+
+## Persistent Configuration
+
+As demonstrated above, you can use the `config` command to change the
+behavior of presto.  These configuration options are persisted in a
+config file specific to the endpoint provided at the command-line and
+will be reloaded the next time you invoke presto with the same endpoint.
+
+__TODO:__ provide a means for aliasing endpoints so that configuration
+is shared across multiple endpoints.
+
+## History and Scripting
+
+Just like configuration, command history is maintained separately for each
+endpoint specified on the command-line and is persisted across sessions
+(assuming you have a capable Term::Readline library installed).  You can
+interrogate the history using the (surprisingly named) `history` command.
+It supports a small subset of the `bash` history command:
+
+	# dump all history
+	http://my-server.com> history
+
+	# dump last 5 entries
+	http://my-server.com> history 5
+
+	# delete specific history entries
+	http://my-server.com> history -d 4
+
+	# clear history
+	http://my-server.com> history -c
+
+Presto also provides a way of saving and replaying bits of your command
+history. Here are some examples:
+
+	# save all history to script file "my-script"
+	http://my-server.com> save my-script
+
+	# save the last 5 history entries
+	http://my-server.com> save my-script 5
+
+	# save entries 3-7
+	http://my-server.com> save my-script 3..7 
+
+To replay scripts:
+
+	http://my-server.com> source my-script
+
+	# prompt before each command
+	http://my-server.com> source -i my-script
+
+__TODO:__ Allow passing of params to scripts for greater reusability.
+
+## (EXPERIMENTAL) Data::DPath integration
+
+At times (especially when working with scripts) it might be handy to
+use elements from a previous response to affect a subsequent request.
+Anything inside a pair of double curly brackents (i.e. `{{ }}`) will
+be interpolated for you.  For instance, a very contrived example: 
+
+	http://my-server.com> GET /products.json
+	[{"id":"1","name":"My Product"},{"id":"2","name":"Another Product"}]
+
+	# issue a request to /product/2.json
+	http://my-server.com> GET /product/{{$BODY/id[-1]}}.json
+	{"id":2,"name":"Another Product"}
+
+In this example, anything after `$BODY` (including the `/`) is passed
+to [Data::DPath](http://search.cpan.org/perldoc?Data::DPath) and the result is then injected in it's place.
+
+You can also output arbitrary response headers. The `echo` command can
+come in handy for this kind of experimenting:
+
+	# output the value of a specific response header
+	http://my-server.com> echo {{$HEADER{Content-type}}}
+
+# CAVEAT EMPTOR
+
+This is alpha-quality code and while I use it in my own daily workflow,
+it is likely riddled with horribly obvious bugs and missing functionality
+(let alone undocumented features). As I flesh out the functionality,
+many things are likely to change dramatically.
+
+# AUTHOR
+
+Brian Phillips <bphillips@cpan.org>
+
+# COPYRIGHT AND LICENSE
+
+This software is copyright (c) 2012 by Brian Phillips and Shutterstock Images (http://shutterstock.com).
+
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.
