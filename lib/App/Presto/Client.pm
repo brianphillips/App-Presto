@@ -104,16 +104,21 @@ sub response {
     return shift->_rest_client->{_res} || undef;
 }
 
+sub has_response_content {
+    my $self = shift;
+    return $self->response->content_length || length($self->response->content);
+}
 sub response_data {
     my $self = shift;
     my $response = $self->response;
-    my $content_type = $response->header('Content-type');
-    foreach my $h($self->content_handlers){
-        if($h->can_deserialize( $content_type )){
-            return $h->deserialize( $response->content );
+    if(my $content_type = $response->header('Content-type')){
+        foreach my $h($self->content_handlers){
+            if($h->can_deserialize( $content_type )){
+                return $h->deserialize( $response->content );
+            }
         }
+        warn "no available deserializer found for content type: $content_type";
     }
-    warn "no available deserializer found for content type: $content_type";
     return $response->decoded_content;
 }
 

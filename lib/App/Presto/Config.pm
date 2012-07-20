@@ -10,6 +10,7 @@ use File::Path qw(make_path);
 has endpoint => (
     is => 'rw',
     required => 1,
+    trigger => sub { delete shift->{endpoint_dir} }
 );
 has config => (
     is => 'lazy',
@@ -46,7 +47,7 @@ has endpoint_dir => (
 
 sub _build_endpoint_dir {
     my $self = shift;
-    my $root = $ENV{APP_REST_CLI_DIR} || sprintf('%s/.app-rest-cli', File::HomeDir->my_home);
+    my $root = $ENV{APP_REST_CLI_DIR} || sprintf('%s/.app-presto', File::HomeDir->my_home);
     (my $endpoint_dir = lc $self->endpoint) =~ s/\W+/-/g;
     my $dir = sprintf( '%s/%s', $root, $endpoint_dir);
     if(!-d $dir){

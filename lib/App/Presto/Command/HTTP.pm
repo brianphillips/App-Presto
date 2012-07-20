@@ -72,7 +72,7 @@ sub handle_response {
     if ( $config->get('verbose') ) {
         print _dump_request_response( $response->request, $response );
     }
-    if ( $response->content_length ) {
+    if ( $client->has_response_content ) {
         if ( $config->get('deserialize_response') ) {
             my $data = $client->response_data;
             $self->_pretty_print_data($data);
@@ -94,11 +94,6 @@ sub _dump_request_response {
 %s
 -----   END    -----
 _OUT_
-}
-
-sub _deserialize_response {
-    my $response = shift;
-    return $response->content;
 }
 
 sub help_categories {
@@ -125,8 +120,12 @@ my %PRETTY_PRINTERS = (
 sub _pretty_print_data {
     my $self = shift;
     my $data = shift;
-    my $pretty_printer = $PRETTY_PRINTERS{$self->config->get('pretty_printer') || ''} || $PRETTY_PRINTERS{'Data::Dumper'};
-    print $pretty_printer->($data);
+    if(ref $data){
+        my $pretty_printer = $PRETTY_PRINTERS{$self->config->get('pretty_printer') || ''} || $PRETTY_PRINTERS{'Data::Dumper'};
+        print $pretty_printer->($data);
+    } else {
+        print $data,"\n";
+    }
 }
 
 1;
