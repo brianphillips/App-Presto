@@ -13,6 +13,7 @@ use App::Presto::CommandFactory;
 use App::Presto::Config;
 use App::Presto::Client;
 use App::Presto::ShellUI;
+use App::Presto::Stash;
 
 has client => (
 	is       => 'lazy',
@@ -28,9 +29,14 @@ has config => (
 	handles  => ['endpoint'],
 );
 
-sub _build_config {
+has _stash => (
+	is       => 'lazy',
+	handles  => ['stash'],
+);
+
+sub _build__stash {
 	my $self = shift;
-	return App::Presto::Config->new;
+	return App::Presto::Stash->new;
 }
 
 has term => (
@@ -99,7 +105,8 @@ sub run {
 	}
 	$self->command_factory->install_commands($self);
 
-	return $self->term->run;
+	my $term = $self->term;
+	return $term->run;
 }
 
 1;

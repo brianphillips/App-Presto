@@ -14,10 +14,12 @@ lib/App/Presto/Command/HTTP.pm
 lib/App/Presto/Command/config.pm
 lib/App/Presto/Command/headers.pm
 lib/App/Presto/Command/script.pm
+lib/App/Presto/Command/stash.pm
 lib/App/Presto/CommandFactory.pm
 lib/App/Presto/CommandHasHelp.pm
 lib/App/Presto/Config.pm
 lib/App/Presto/InstallableCommand.pm
 lib/App/Presto/ShellUI.pm
+lib/App/Presto/Stash.pm
 t/00-compile.t
 t/release-pod-syntax.t

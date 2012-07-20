@@ -37,6 +37,7 @@ my %WriteMakefileArgs = (
     "Moo" => 0,
     "Moo::Role" => 0,
     "REST::Client" => 0,
+    "Regexp::Common" => 0,
     "Term::ShellUI" => 0,
     "URI" => 0,
     "URI::QueryParam" => 0,
