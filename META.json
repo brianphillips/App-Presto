@@ -43,8 +43,11 @@
       },
       "test" : {
          "requires" : {
+            "File::Basename" : "0",
             "File::Find" : "0",
             "File::Temp" : "0",
+            "HTTP::Headers" : "0",
+            "Test::MockObject" : "0",
             "Test::More" : "0"
          }
       }

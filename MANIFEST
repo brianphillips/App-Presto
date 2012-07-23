@@ -7,6 +7,7 @@ README.mkdn
 bin/presto
 dist.ini
 lib/App/Presto.pm
+lib/App/Presto/ArgProcessor.pm
 lib/App/Presto/Client.pm
 lib/App/Presto/Client/ContentHandlers/JSON.pm
 lib/App/Presto/Client/ContentHandlers/XMLSimple.pm
@@ -22,4 +23,8 @@ lib/App/Presto/InstallableCommand.pm
 lib/App/Presto/ShellUI.pm
 lib/App/Presto/Stash.pm
 t/00-compile.t
+t/01-stash.t
+t/02-config.t
+t/03-arg-processor.t
+t/config/http-myserver-com/config.json
 t/release-pod-syntax.t

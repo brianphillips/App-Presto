@@ -157,24 +157,24 @@ __TODO:__ Allow passing of params to scripts for greater reusability.
 
 At times (especially when working with scripts) it might be handy to
 use elements from a previous response to affect a subsequent request.
-Anything inside a pair of double curly brackents (i.e. `{{ }}`) will
-be interpolated for you.  For instance, a very contrived example: 
+Anything inside a balanced `$(...)` will be interpolated for you.
+For instance, a very contrived example:
 
 	http://my-server.com> GET /products.json
 	[{"id":"1","name":"My Product"},{"id":"2","name":"Another Product"}]
 
 	# issue a request to /product/2.json
-	http://my-server.com> GET /product/{{$BODY/id[-1]}}.json
+	http://my-server.com> GET /product/$(BODY/id[-1]).json
 	{"id":2,"name":"Another Product"}
 
-In this example, anything after `$BODY` (including the `/`) is passed
+In this example, anything after `BODY` (including the `/`) is passed
 to [Data::DPath](http://search.cpan.org/perldoc?Data::DPath) and the result is then injected in it's place.
 
 You can also output arbitrary response headers. The `echo` command can
 come in handy for this kind of experimenting:
 
 	# output the value of a specific response header
-	http://my-server.com> echo {{$HEADER{Content-type}}}
+	http://my-server.com> echo $(HEADER[Content-type])
 
 # CAVEAT EMPTOR
 

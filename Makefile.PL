@@ -12,8 +12,11 @@ my %WriteMakefileArgs = (
   "ABSTRACT" => "Command-line interface for RESTful web services",
   "AUTHOR" => "Brian Phillips <bphillips\@cpan.org>",
   "BUILD_REQUIRES" => {
+    "File::Basename" => 0,
     "File::Find" => 0,
     "File::Temp" => 0,
+    "HTTP::Headers" => 0,
+    "Test::MockObject" => 0,
     "Test::More" => 0
   },
   "CONFIGURE_REQUIRES" => {

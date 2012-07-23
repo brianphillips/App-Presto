@@ -16,6 +16,7 @@ use File::Path qw(make_path);
 has endpoint => (
     is => 'rw',
     required => 1,
+    trigger => sub { delete shift->{endpoint_dir} }
 );
 has config => (
     is => 'lazy',

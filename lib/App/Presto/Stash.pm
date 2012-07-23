@@ -27,6 +27,7 @@ use Moo;
 		my $k = shift;
 		return delete $stash->{$k};
 	}
+
 	sub stash {
 		my $self = shift;
 		if(@_ == 2){
