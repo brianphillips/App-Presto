@@ -37,10 +37,16 @@ is_deeply [$f->commands], [], 'no commands returned from mock';
 
     {
         no warnings 'redefine';
-        local *MyCommand::help_categories = sub { $called++ };
-        $f->help_categories;
+        local *MyCommand::help_categories = sub { $called++; return {foo => 'bar'} };
+        my $categories = $f->help_categories;
+        is_deeply $categories, { MyCommand => { foo => 'bar' } }, 'constructs appropriate help_categories';
         ok $called, 'help_categories called';
     }
+}
+
+{
+    local @commands = 'MyOtherCommand';
+    is_deeply $f->help_categories, {}, 'no help categories';
 }
 
 
@@ -57,5 +63,13 @@ BEGIN {
 
     sub install { }
     sub help_categories { }
+
+    package MyOtherCommand;
+    use Moo;
+    use Test::More;
+
+    with 'App::Presto::InstallableCommand';
+
+    sub install { }
 
 }
