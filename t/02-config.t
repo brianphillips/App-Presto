@@ -25,6 +25,7 @@ subtest 'empty config' => sub {
     remove_tree( $EMPTY, { keep_root => 1 } );
 
     my $config = App::Presto::Config->new( endpoint => 'http://myserver.com' );
+    is $config->get('endpoint'), 'http://myserver.com', 'endpoint';
     my @warnings = capture_warnings {
         like $config->endpoint_dir, qr{myserver},
           'config dir reflects endpoint name';
