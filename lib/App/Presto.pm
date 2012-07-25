@@ -15,7 +15,7 @@ has client => (
 
 sub _build_client {
 	my $self = shift;
-	return App::Presto::Client->new;
+	return App::Presto::Client->new(config => $self->config);
 }
 
 has config => (
