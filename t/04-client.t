@@ -33,4 +33,19 @@ $client->PUT('/bar', 'foobar');
 	is $args->[2], 'foobar', 'PUT body';
 }
 
+$client->HEAD;
+{
+	my ( $m, $args ) = $rest_client->next_call;
+	is $m, 'HEAD', 'rest_client HEAD (no uri)';
+	is $args->[1], 'http://my-server.com/', 'default URI';
+}
+
+$client->POST('/foo', q({"a":1}));
+{
+	my ( $m, $args ) = $rest_client->next_call;
+	is $m, 'POST', 'rest_client POST';
+	is $args->[1], 'http://my-server.com/foo', 'POST URI';
+	is $args->[2], '{"a":1}', 'POST body';
+}
+
 done_testing;

@@ -88,7 +88,8 @@ sub _make_uri {
 	my $config    = $self->config;
 
 	my $endpoint;
-	if ( $local_uri && $local_uri =~ m{^https?://} ) {
+	$local_uri = '/' if ! defined $local_uri;
+	if ( $local_uri =~ m{^https?://} ) {
 		$endpoint = $local_uri;
 	} else {
 		$endpoint = $config->endpoint;
