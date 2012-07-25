@@ -26,5 +26,7 @@ t/00-compile.t
 t/01-stash.t
 t/02-config.t
 t/03-arg-processor.t
+t/04-client.t
+t/05-command-factory.t
 t/config/http-myserver-com/config.json
 t/release-pod-syntax.t

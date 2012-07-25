@@ -63,7 +63,6 @@ subtest 'new endpoint' => sub {
 
     ok !@warnings, 'no warnings' or diag explain $config, \@warnings;
     is $config->get('foo'), 1, 'loaded correctly';
-    diag explain $config->config;
 
     like $config->file('foo'), qr{/foo}, 'file has correct name';
     $config->set(endpoint => 'http://anotherserver.com');
