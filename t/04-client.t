@@ -8,6 +8,11 @@ my $config = Test::MockObject->new;
 $config->set_always( endpoint => 'http://my-server.com');
 my $rest_client = Test::MockObject->new;
 $rest_client->set_true('GET','DELETE','PUT','POST','HEAD');
+
+my %headers;
+$rest_client->mock('addHeader', sub { shift; my($k,$v) = @_; $headers{$k} = $v; });
+$rest_client->{_headers} = \%headers;
+
 my $client = App::Presto::Client->new(config=>$config, _rest_client => $rest_client);
 
 isa_ok($client, 'App::Presto::Client');
@@ -47,5 +52,18 @@ $client->POST('/foo', q({"a":1}));
 	is $args->[1], 'http://my-server.com/foo', 'POST URI';
 	is $args->[2], '{"a":1}', 'POST body';
 }
+
+$client->GET('/foo', 'a=1', 'b=2,3', 'a=4');
+{
+	my ( $m, $args ) = $rest_client->next_call;
+	is $m, 'GET', 'rest_client GET with params';
+	is $args->[1], 'http://my-server.com/foo?a=1&b=2%2C3&a=4', 'constructs correct URI with params';
+}
+
+$client->set_header(foo => 'bar');
+is_deeply {$client->all_headers}, {foo => 'bar'}, 'set_header';
+is $client->get_header('foo'), 'bar', 'get_header';
+$client->clear_headers;
+is_deeply {$client->all_headers}, {}, 'clear_headers';
 
 done_testing;
