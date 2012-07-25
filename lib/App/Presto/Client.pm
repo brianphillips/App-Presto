@@ -47,7 +47,7 @@ sub get_header {
 
 sub clear_headers {
 	my $self = shift;
-	%{$self->_rest_client->{_headers} ||= {}} = ();
+	%{$self->_rest_client->{_headers} || {}} = ();
 	return;
 }
 
