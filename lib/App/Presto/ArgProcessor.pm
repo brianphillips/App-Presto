@@ -31,8 +31,8 @@ sub process {
 			if ( $arg =~ m{^#} ) {    # comments
 				splice( @$args, $i );    # everything else is a comment
 				last;
-			} elsif ( $arg =~ m[^\$$RE{balanced}{-keep}$] ) {                            # full substitutions
-				$args->[$i] = $self->_expand_param( substr( $1, 1, -1 ) );
+			} elsif ( $arg =~ m[^(\$$RE{balanced}{-keep})$] ) {                            # full substitutions
+				$args->[$i] = $self->_expand_param( substr( $2, 1, -1 ), $1 );
 			} else {                     # this one gets interpolated
 				$args->[$i] =~ s[(\$$RE{balanced}{-keep})][my $result = $self->_expand_param(substr($2,1,-1),$1); ref($result) eq 'ARRAY' ? join(',', @$result) : $result]eg;
 			}
@@ -71,6 +71,7 @@ sub _expand_response_param {
 			return _apply_dpath($client->response_data, $sub_section);
 		}
 	} 
+	return undef;
 }
 
 sub _apply_dpath {

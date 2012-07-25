@@ -38,9 +38,18 @@ is_deeply $p->process([1,'$(STASH[hash]/)',4]), [1,{a=>1,b=>2,c=>3,d=>4},4], 'fu
 
 $headers->header('foo', 2);
 is_deeply $p->process([1,'$(HEADER[foo])',3]), [1,2,3], 'header substitution';
-$response_data = { data => { foo => 2, bar => 3} };
+$response_data = { data => { foo => 2, bar => 3}, blah => {foo => 4}, foo => 5 };
+
+is_deeply $p->process([1,'$(HEADER)',3]), [1,'$(HEADER)',3], 'invalid header substitution';
+
 is_deeply $p->process([1,'$(BODY)',3]), [1,$response_data,3], 'response substitution';
-is_deeply $p->process([1,'$(BODY//foo)',3]), [1,2,3], 'response data substitution';
-is_deeply $p->process([1,'interp-$(BODY//foo)',3]), [1,'interp-2',3], 'response data interpolated substitution';
+{
+	my $processed = $p->process([1,'$(BODY//foo)',3]);
+	is $processed->[0], 1, 'complex 1';
+	is_deeply [sort { $a <=> $b} @{$processed->[1]}], [2,4,5], 'complex 2';
+	is $processed->[2], 3, 'complex 3';
+}
+is_deeply $p->process([1,'$(BODY/)',3]), [1,$response_data,3], 'complex response data substitution';
+is_deeply $p->process([1,2,'interp-$(BODY//bar)']), [1,2,'interp-3'], 'response data interpolated substitution';
 
 done_testing;
