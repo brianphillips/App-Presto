@@ -6,6 +6,7 @@ use strict;
 use warnings;
 use Regexp::Common qw(balanced);
 use Moo;
+use App::Presto::ArgProcessor;
 extends 'Term::ShellUI';
 
 foreach my $m(qw(readline GetHistory)){
@@ -19,7 +20,7 @@ has arg_processor => (
 
 sub _build_arg_processor {
 	my $self = shift;
-	return App::Presto::ArgProcess->new;
+	return App::Presto::ArgProcessor->new;
 }
 
 sub call_command {
