@@ -81,6 +81,9 @@ You can also specify additional headers you would like included in the request:
 
 B<TODO:> Implement better support for creating POST/PUT content.
 
+B<TODO:> Warn about missing content-type on PUT/POST if the header isn't
+set. (or auto-detect?)
+
 =head2 Response Handling
 
 By default, presto will just dump the response body to the screen after
@@ -112,6 +115,8 @@ will be reloaded the next time you invoke presto with the same endpoint.
 
 B<TODO:> provide a means for aliasing endpoints so that configuration
 is shared across multiple endpoints.
+
+B<TODO:> Document valid config options.
 
 =head2 History and Scripting
 
@@ -154,12 +159,42 @@ To replay scripts:
 
 B<TODO:> Allow passing of params to scripts for greater reusability.
 
-=head2 (EXPERIMENTAL) Data::DPath integration
+=head2 Variable interpolation
 
 At times (especially when working with scripts) it might be handy to
 use elements from a previous response to affect a subsequent request.
 Anything inside a balanced C<$(...)> will be interpolated for you.
 For instance, a very contrived example:
+
+	# hypothetical authentication protocal that returns a token in the response headers
+	http://my-server.com> POST /auth.json username=jdoe&password=s3cr3t
+	{"authenticated":true}
+
+	# see the authentication token
+	http://my-server.com> echo $(HEADER[X-Auth-Token])
+	2c26b46b68ffc68ff99b453c1d30413413422d706483bfa0f98a5e886266e7ae
+
+If you need to include that in subsequent request, you can use the "stash" feature:
+
+	# store the value
+	http://my-server.com> stash auth-token $(HEADER[X-Auth-Token])
+
+	# use the value later
+	http://my-server.com> header X-Auth-Token $(STASH[auth-token])
+
+Those variable substitutions can be used anywhere in a command.  C<HEADER>
+and C<BODY> always refer to the most recent request while the C<STASH>
+is a persisted for the life of the process.
+
+B<TODO:> Allow data structure references (from C<STASH> or even C<BODY>)
+to be passed to a POST or PUT command which is then serialized based
+on the content-type of the request before being sent over the wire.
+
+=head2 (EXPERIMENTAL) Data::DPath integration
+
+As an add-on to the variable interpolated described above, you can
+use dpath expressions to further process the data returned from the
+REST service.  Another very contrived example:
 
 	http://my-server.com> GET /products.json
 	[{"id":"1","name":"My Product"},{"id":"2","name":"Another Product"}]
@@ -169,19 +204,15 @@ For instance, a very contrived example:
 	{"id":2,"name":"Another Product"}
 
 In this example, anything after C<BODY> (including the C</>) is passed
-to L<Data::DPath> and the result is then injected in it's place.
+to L<Data::DPath> and the result is then injected in it's place (the target
+data for C<BODY> being the previous request's response data).
 
-You can also output arbitrary response headers. The C<echo> command can
-come in handy for this kind of experimenting:
-
-	# output the value of a specific response header
-	http://my-server.com> echo $(HEADER[Content-type])
+This feature will work on C<$(STASH)> values as well.
 
 =head1 CAVEAT EMPTOR
 
-This is alpha-quality code and while I use it in my own daily workflow,
+This is beta-quality code and while I use it in my own daily workflow,
 it is likely riddled with horribly obvious bugs and missing functionality
-(let alone undocumented features). As I flesh out the functionality,
-many things are likely to change dramatically.
+(let alone undocumented features).
 
 =cut
