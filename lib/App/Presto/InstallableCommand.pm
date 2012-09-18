@@ -3,7 +3,7 @@ BEGIN {
   $App::Presto::InstallableCommand::AUTHORITY = 'cpan:BPHILLIPS';
 }
 {
-  $App::Presto::InstallableCommand::VERSION = '0.002';
+  $App::Presto::InstallableCommand::VERSION = '0.003';
 }
 
 # ABSTRACT: Role for command modules that can be installed
@@ -31,7 +31,7 @@ App::Presto::InstallableCommand - Role for command modules that can be installed
 
 =head1 VERSION
 
-version 0.002
+version 0.003
 
 =head1 AUTHOR
 

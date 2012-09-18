@@ -3,7 +3,7 @@ BEGIN {
   $App::Presto::Client::AUTHORITY = 'cpan:BPHILLIPS';
 }
 {
-  $App::Presto::Client::VERSION = '0.002';
+  $App::Presto::Client::VERSION = '0.003';
 }
 
 # ABSTRACT: The REST client
@@ -146,7 +146,7 @@ App::Presto::Client - The REST client
 
 =head1 VERSION
 
-version 0.002
+version 0.003
 
 =head1 AUTHOR
 
