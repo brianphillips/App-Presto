@@ -3,7 +3,7 @@ package App::Presto::Command::script;
 # ABSTRACT: REST script-related commands
 
 use Moo;
-use File::Path qw(make_path);
+use File::Path 2.08 qw(make_path);
 with 'App::Presto::InstallableCommand', 'App::Presto::CommandHasHelp';
 
 has scripts => ( is => 'lazy' );
