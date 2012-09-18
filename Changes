@@ -1,0 +1,13 @@
+Changes file for App-Presto
+
+{{$NEXT}}
+ 
+  - added Changes file
+
+0.002 Tue Sep 18 08:12:48 CDT 2012
+
+  - added required version for File::Path
+ 
+0.001  Fri Sep 07 2012
+ 
+  - the first release
