@@ -33,7 +33,7 @@ my %WriteMakefileArgs = (
     "Data::Dump" => 0,
     "Data::Dumper" => 0,
     "File::HomeDir" => 0,
-    "File::Path" => 0,
+    "File::Path" => "2.08",
     "JSON" => 0,
     "MIME::Base64" => 0,
     "Module::Pluggable" => 0,
@@ -49,7 +49,7 @@ my %WriteMakefileArgs = (
     "strict" => 0,
     "warnings" => 0
   },
-  "VERSION" => "0.001",
+  "VERSION" => "0.002",
   "test" => {
     "TESTS" => "t/*.t"
   }

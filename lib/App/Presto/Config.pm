@@ -3,7 +3,7 @@ BEGIN {
   $App::Presto::Config::AUTHORITY = 'cpan:BPHILLIPS';
 }
 {
-  $App::Presto::Config::VERSION = '0.001';
+  $App::Presto::Config::VERSION = '0.002';
 }
 
 # ABSTRACT: Manage configuration for a given endpoint
@@ -11,7 +11,7 @@ BEGIN {
 use Moo;
 use JSON qw(decode_json encode_json);
 use File::HomeDir;
-use File::Path qw(make_path);
+use File::Path 2.08 qw(make_path);
 
 has endpoint => (
     is => 'rw',
@@ -127,7 +127,7 @@ App::Presto::Config - Manage configuration for a given endpoint
 
 =head1 VERSION
 
-version 0.001
+version 0.002
 
 =head1 AUTHOR
 

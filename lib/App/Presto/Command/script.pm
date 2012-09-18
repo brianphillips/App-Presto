@@ -3,13 +3,13 @@ BEGIN {
   $App::Presto::Command::script::AUTHORITY = 'cpan:BPHILLIPS';
 }
 {
-  $App::Presto::Command::script::VERSION = '0.001';
+  $App::Presto::Command::script::VERSION = '0.002';
 }
 
 # ABSTRACT: REST script-related commands
 
 use Moo;
-use File::Path qw(make_path);
+use File::Path 2.08 qw(make_path);
 with 'App::Presto::InstallableCommand', 'App::Presto::CommandHasHelp';
 
 has scripts => ( is => 'lazy' );
@@ -175,7 +175,7 @@ App::Presto::Command::script - REST script-related commands
 
 =head1 VERSION
 
-version 0.001
+version 0.002
 
 =head1 AUTHOR
 

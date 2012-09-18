@@ -3,7 +3,7 @@ BEGIN {
   $App::Presto::Command::config::AUTHORITY = 'cpan:BPHILLIPS';
 }
 {
-  $App::Presto::Command::config::VERSION = '0.001';
+  $App::Presto::Command::config::VERSION = '0.002';
 }
 
 # ABSTRACT: Config-related commands
@@ -58,7 +58,7 @@ App::Presto::Command::config - Config-related commands
 
 =head1 VERSION
 
-version 0.001
+version 0.002
 
 =head1 AUTHOR
 
