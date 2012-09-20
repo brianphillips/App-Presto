@@ -113,10 +113,32 @@ behavior of presto.  These configuration options are persisted in a
 config file specific to the endpoint provided at the command-line and
 will be reloaded the next time you invoke presto with the same endpoint.
 
+Current valid config keys are:
+
+=over 4
+
+=item * verbose
+
+Boolean, when enabled, dumps request/response to STDOUT (defaults to "0")
+
+=item * deserialize_response 
+
+Boolean, when enabled response body is parsed based on the C<Content-Type>
+header (defaults to "1")
+
+=item * pretty_printer
+
+Must be one of the supported modules (i.e. Data::Dumper or JSON).
+Use tab completion to see currently supported values (defaults to "JSON").
+
+=item * binmode
+
+Used to set encoding of STDIN and STDOUT handles (defaults to "utf8")
+
+=back
+
 B<TODO:> provide a means for aliasing endpoints so that configuration
 is shared across multiple endpoints.
-
-B<TODO:> Document valid config options.
 
 =head2 History and Scripting
 

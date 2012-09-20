@@ -53,6 +53,9 @@ sub _mk_proc_for {
     my $client = $self->client;
     return sub {
         add_url($method => $_[0]);
+        if($method =~ m/^P/){
+            warn " * no content-type header currently set\n" unless $client->get_header('Content-Type');
+        }
         $client->$method(@_);
         $self->handle_response($client);
     }
