@@ -177,6 +177,25 @@ FEATURES
     and "BODY" always refer to the most recent request while the "STASH" is
     a persisted for the life of the process.
 
+    One useful feature for scripting is to prompt for user input. You can do
+    this by using the "PROMPT" pseudo-variable. The first set of brackets
+    specify the prompt value. The second (optional) set of brackets specify
+    the initial value. An example:
+
+            # collect the username/password from the user
+            http://my-server.com> stash username $(PROMPT[username:])
+            http://my-server.com> stash password $(PROMPT[password:])
+
+            # use the stashed values
+            http://my-server.com> authorization $(STASH[username]) $(STASH[password])
+            http://my-server.com> GET /$(STASH[username])/profile
+
+            # or use a value that was prompted for directly (without stashing it)
+            http://my-server.com> GET /products 'created_on=$(PROMPT[Created on (YYYY-MM-DD):])'
+
+            # you can also specify initial values
+            http://my-server.com> GET /products 'status=$(PROMPT[Product status:][active])'
+
     TODO: Allow data structure references (from "STASH" or even "BODY") to
     be passed to a POST or PUT command which is then serialized based on the
     content-type of the request before being sent over the wire.

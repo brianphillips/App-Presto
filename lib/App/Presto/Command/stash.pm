@@ -10,7 +10,7 @@ BEGIN {
 
 use Moo;
 use Data::Dumper;
-with 'App::Presto::InstallableCommand', 'App::Presto::CommandHasHelp';
+with 'App::Presto::InstallableCommand', 'App::Presto::CommandHasHelp', 'App::Presto::WithPrettyPrinter';
 
 sub install {
     my $self = shift;
@@ -20,10 +20,10 @@ sub install {
                 desc => 'get/set stash values',
                 minargs => 0,
                 maxargs => 2,
-                args    => [ sub { return [$self->config->keys] } ],
+                args    => [ sub { return [keys %{ $self->stash }] } ],
                 proc    => sub {
                     if(@_ == 1){
-                        printf "%s=%s\n", $_[0], $self->stash( $_[0] );
+                        print $self->pretty_print( { $_[0] => $self->stash($_[0]) } );
                     } elsif(@_ == 2){
                         if($_[0] eq '--unset'){
                             $self->_stash->unset( $_[1] );
@@ -31,9 +31,7 @@ sub install {
                             $self->stash(@_);
                         }
                     } else {
-												no warnings 'once';
-												local $Data::Dumper::Sortkeys=1;
-												print Dumper $self->stash;
+                        print $self->pretty_print( $self->stash );
                     }
                 },
             },
@@ -43,8 +41,8 @@ sub install {
 
 sub help_categories {
     return {
-        desc => 'Get/Set/List config values',
-        cmds => [qw(config)],
+        desc => 'Get/Set/List stash values',
+        cmds => [qw(stash)],
     };
 }
 

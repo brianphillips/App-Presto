@@ -21,8 +21,10 @@ lib/App/Presto/CommandFactory.pm
 lib/App/Presto/CommandHasHelp.pm
 lib/App/Presto/Config.pm
 lib/App/Presto/InstallableCommand.pm
+lib/App/Presto/PrettyPrinter.pm
 lib/App/Presto/ShellUI.pm
 lib/App/Presto/Stash.pm
+lib/App/Presto/WithPrettyPrinter.pm
 t/00-compile.t
 t/01-stash.t
 t/02-config.t
