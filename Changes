@@ -2,6 +2,8 @@ Changes file for App-Presto
 
 {{$NEXT}}
 
+0.003     2012-09-20 16:26:47 America/Chicago
+
 	- better tab completion options for various commands
 	- warn on missing content-type header for request
 	- stricter config handling (only certain keys are allowed)
