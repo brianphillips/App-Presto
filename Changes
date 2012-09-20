@@ -2,6 +2,10 @@ Changes file for App-Presto
 
 {{$NEXT}}
 
+	- better tab completion options for various commands
+	- warn on missing content-type header for request
+	- stricter config handling (only certain keys are allowed)
+	- added support for $(PROMPT[hullo?]) expansion
   - added Changes file
 
 0.002 Tue Sep 18 08:12:48 CDT 2012

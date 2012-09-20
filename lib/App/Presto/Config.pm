@@ -123,6 +123,7 @@ sub write_config {
 my %DEFAULTS = (
     binmode        => 'utf8',
     pretty_printer => 'JSON',
+    deserialize_response => 1,
 );
 sub init_defaults {
     my $self = shift;
