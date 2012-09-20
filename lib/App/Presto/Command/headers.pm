@@ -33,6 +33,7 @@ sub install {
                                 MIME::Base64::encode( "$username:$password", '' ) )
                         );
                     } elsif( my $auth = $client->get_header('Authorization') ){
+                        $auth =~ s/Basic //;
                         my ($u,$p) = split(/:/, MIME::Base64::decode( $auth ), 2 );
                         print "Username: $u\nPassword: $p\n";
                     }
