@@ -39,7 +39,7 @@ has term => (
 sub _build_term {
 	my $self = shift;
 		my $help_categories = $self->command_factory->help_categories;
-    return App::Presto::ShellUI->new(
+    my $term = App::Presto::ShellUI->new(
         commands => {
             "help" => {
                 exclude_from_completion => 1,
@@ -76,6 +76,8 @@ sub _build_term {
         prompt       => sprintf( '%s> ', $self->endpoint ),
         history_file => $self->config->file('history'),
     );
+		$term->ornaments('md,me,,');
+		return $term;
 }
 
 has command_factory => (

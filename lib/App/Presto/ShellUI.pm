@@ -36,4 +36,8 @@ sub call_command {
 	return $self->SUPER::call_command(@_);
 }
 
+sub ornaments {
+	shift->{term}->ornaments(@_);
+}
+
 1;
