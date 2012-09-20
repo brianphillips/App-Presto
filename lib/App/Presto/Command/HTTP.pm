@@ -5,63 +5,57 @@ package App::Presto::Command::HTTP;
 use strict;
 use warnings;
 use Moo;
-with 'App::Presto::InstallableCommand', 'App::Presto::CommandHasHelp';
+with 'App::Presto::InstallableCommand', 'App::Presto::CommandHasHelp','App::Presto::WithPrettyPrinter';
+
+my %URL_HISTORY;
+
+sub urls_for {
+    my $method = shift;
+    return $URL_HISTORY{$method} || [];
+}
+sub add_url {
+    my($method, $url) = @_;
+    push(@{ $URL_HISTORY{$method} ||= []}, $url);
+}
 
 sub install {
     my $self = shift;
-    my $config = $self->config;
     my $client = $self->client;
     $self->term->add_commands(
         {
-            form   => {
+            form => {
                 proc => sub {
                     my @query;
-                    foreach my $kv(@_){
-                        my($k,$v) = split(/=/, $kv, 2);
+                    foreach my $kv (@_) {
+                        my ( $k, $v ) = split( /=/, $kv, 2 );
                         push @query, $k, $v || '';
                     }
-                    my $uri = $client->_append_query_params('', @query);
+                    my $uri = $client->_append_query_params( '', @query );
                     $uri =~ s{^\?}{};
                     print "$uri\n";
-                }
+                  }
             },
-            GET => {
-                desc => 'perform a GET HTTP action',
-                proc => sub {
-                    $client->GET(@_);
-                    $self->handle_response($client);
-                },
-            },
-            POST   => {
-                desc => 'perform a POST HTTP action',
-                proc => sub {
-                    $client->POST(@_);
-                    $self->handle_response($client);
-                },
-            },
-            PUT    => {
-                desc => 'perform a PUT HTTP action',
-                proc => sub {
-                    $client->PUT(@_);
-                    $self->handle_response($client);
-                },
-            },
-            DELETE => {
-                desc => 'perform a DELETE HTTP action',
-                proc => sub {
-                    $client->DELETE(@_);
-                    $self->handle_response($client);
-                },
-            },
-            HEAD => {
-                desc => 'perform a HEAD HTTP action',
-                proc => sub {
-                    $client->HEAD(@_);
-                    $self->handle_response($client);
-                },
-            },
+            map {
+                my $m = $_;
+                $m => {
+                    desc => "perform a $m HTTP action",
+                    args => [ sub { urls_for($m) } ],
+                    proc => $self->_mk_proc_for($m)
+                  }
+              } qw(GET POST PUT DELETE HEAD)
         }
     );
+}
+
+sub _mk_proc_for {
+    my $self = shift;
+    my $method = shift;
+    my $client = $self->client;
+    return sub {
+        add_url($method => $_[0]);
+        $client->$method(@_);
+        $self->handle_response($client);
+    }
 }
 
 sub handle_response {
@@ -75,9 +69,9 @@ sub handle_response {
     if ( $client->has_response_content ) {
         if ( $config->get('deserialize_response') ) {
             my $data = $client->response_data;
-            $self->_pretty_print_data($data);
+            print $self->pretty_print($data);
         } elsif ( !$config->get('verbose') ) {    # don't print just the content a second time...
-            print $response->content;
+            print $response->decoded_content;
             print "\n";
         }
     } elsif ( !$config->get('verbose') ) {
@@ -101,31 +95,6 @@ sub help_categories {
         desc => 'Various HTTP verb commands',
         cmds => [qw(GET POST HEAD PUT DELETE)],
     };
-}
-
-my %PRETTY_PRINTERS = (
-    'Data::Dump' => sub {
-        require Data::Dump;
-        return Data::Dump::dump(shift) . "\n";
-    },
-    'Data::Dumper' => sub {
-        require Data::Dumper;
-        no warnings 'once';
-        local $Data::Dumper::Sortkeys = 1;
-        return Data::Dumper::Dumper(shift);
-    },
-    'JSON' => sub { require JSON; return JSON->new->pretty->encode(shift) },
-    'YAML' => sub { require YAML; return YAML::Dump(shift) },
-);
-sub _pretty_print_data {
-    my $self = shift;
-    my $data = shift;
-    if(ref $data){
-        my $pretty_printer = $PRETTY_PRINTERS{$self->config->get('pretty_printer') || ''} || $PRETTY_PRINTERS{'Data::Dumper'};
-        print $pretty_printer->($data);
-    } else {
-        print $data,"\n";
-    }
 }
 
 1;
