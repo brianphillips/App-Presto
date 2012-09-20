@@ -32,8 +32,7 @@ sub install {
                             Authorization => sprintf( 'Basic %s',
                                 MIME::Base64::encode( "$username:$password", '' ) )
                         );
-                    } else {
-                        my $auth = $client->get_header('Authorization') || '';
+                    } elsif( my $auth = $client->get_header('Authorization') ){
                         my ($u,$p) = split(/:/, MIME::Base64::decode( $auth ), 2 );
                         print "Username: $u\nPassword: $p\n";
                     }
