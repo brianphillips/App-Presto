@@ -94,12 +94,20 @@ sub run {
 	my $class = shift;
 	my $self = $class->instance;
 	my @args  = shift;
+	my $config;
 	if(my $endpoint = shift(@args)){
-		$self->config( App::Presto::Config->new( endpoint => $endpoint ) );
+		$self->config( $config = App::Presto::Config->new( endpoint => $endpoint ) );
 	} else {
 		die "Base endpoint (i.e. http://some-host.com) must be specified as command-line argument\n";
 	}
+
+	$config->init_defaults;
+
 	$self->command_factory->install_commands($self);
+
+	my $binmode = $config->get('binmode');
+	binmode(STDOUT,":encoding($binmode)");
+	binmode(STDIN,":encoding($binmode)");
 
 	my $term = $self->term;
 	return $term->run;
