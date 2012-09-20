@@ -82,7 +82,7 @@ sub _build_term {
         prompt       => sprintf( '%s> ', $self->endpoint ),
         history_file => $self->config->file('history'),
     );
-		$term->ornaments(0);
+		$term->ornaments('md,me,,');
 		return $term;
 }
 
