@@ -69,6 +69,11 @@ sub file {
     return sprintf('%s/%s', $self->endpoint_dir, $file);
 }
 
+sub is_set {
+    my $self = shift;
+    my $key  = shift;
+    return exists $self->config->{$key};
+}
 sub set {
     my $self = shift;
     my $key  = shift;
@@ -98,7 +103,7 @@ sub get {
     my $self = shift;
     my $key  = shift;
     return $self->endpoint if $key eq 'endpoint';
-    return $self->config->{$key};
+    return exists $self->config->{$key} ? $self->config->{$key} : undef;
 }
 
 sub keys {
@@ -115,6 +120,18 @@ sub write_config {
     return;
 }
 
+my %DEFAULTS = (
+    binmode => 'utf8'
+);
+sub init_defaults {
+    my $self = shift;
+    foreach my $k(CORE::keys %DEFAULTS){
+        unless($self->is_set($k)){
+            $self->set($k, $DEFAULTS{$k});
+        }
+    }
+    return;
+}
 
 1;
 
