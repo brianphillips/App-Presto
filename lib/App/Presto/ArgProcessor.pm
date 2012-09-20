@@ -23,6 +23,14 @@ sub _build_client {
 	return App::Presto->instance->client;
 }
 
+has term => (
+	is       => 'lazy',
+);
+
+sub _build_term {
+	return App::Presto->instance->term;
+}
+
 sub process {
     my $self = shift;
     my $args  = shift;
@@ -53,6 +61,9 @@ sub _expand_param {
 		if($dpath){
 			$replacement = _apply_dpath($replacement, $dpath)
 		}
+	} elsif($param =~ m/^PROMPT($RE{balanced}{-parens => '[]'})($RE{balanced}{-parens => '[]'})?/){
+		my($prompt,$default) = ($1, $2);
+		$replacement = $self->term->readline( substr( $prompt, 1, -1 ) . ' ', ($default ? substr( $default, 1, -1 ) : () ) );
 	}
 	return defined $replacement ? $replacement : $orig;
 }
