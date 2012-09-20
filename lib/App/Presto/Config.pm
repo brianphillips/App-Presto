@@ -115,7 +115,8 @@ sub write_config {
 }
 
 my %DEFAULTS = (
-    binmode => 'utf8'
+    binmode        => 'utf8',
+    pretty_printer => 'JSON',
 );
 sub init_defaults {
     my $self = shift;
