@@ -21,16 +21,22 @@ sub install {
     $self->term->add_commands(
         {
             authorization => {
-                minargs => 2,
+                minargs => 0,
                 maxargs => 2,
-                desc => 'Set basic auth username/password',
+                desc => 'GET/Set basic auth username/password',
                 args => [sub { '[username]' },sub { '[password]' } ],
                 proc    => sub {
                     my ( $username, $password ) = @_;
-                    $client->set_header(
-                        Authorization => sprintf( 'Basic %s',
-                            MIME::Base64::encode( "$username:$password", '' ) )
-                    );
+                    if($username){
+                        $client->set_header(
+                            Authorization => sprintf( 'Basic %s',
+                                MIME::Base64::encode( "$username:$password", '' ) )
+                        );
+                    } else {
+                        my $auth = $client->get_header('Authorization') || '';
+                        my ($u,$p) = split(/:/, MIME::Base64::decode( $auth ), 2 );
+                        print "Username: $u\nPassword: $p\n";
+                    }
                 },
             },
             type => {
