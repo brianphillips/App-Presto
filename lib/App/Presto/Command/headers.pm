@@ -6,7 +6,7 @@ use strict;
 use warnings;
 use Moo;
 use MIME::Base64;
-with 'App::Presto::InstallableCommand','App::Presto::CommandHasHelp';
+with 'App::Presto::InstallableCommand','App::Presto::CommandHasHelp', 'App::Presto::WithPrettyPrinter';
 
 sub install {
     my $self = shift;
@@ -51,23 +51,16 @@ sub install {
                     my @args   = @_;
                     if ( !$header ) {    # print all
                         my %headers = $client->all_headers;
-                        print "Headers:\n";
-                        foreach my $h ( keys %headers ) {
-                            printf " - %s: %s\n", $h, $headers{$h};
-                        }
-                    }
-                    elsif ( $header eq '-clear' ) {
+                        print $self->pretty_print( \%headers );
+                    } elsif ( $header eq '-clear' ) {
                         $client->clear_headers;
-                    }
-                    elsif (@args) {      # set
-                        $header =~ s/:$//
-                          ; # to allow pasting of an actual HTTP header from the dump
+                    } elsif (@args) {      # set
+                        $header =~ s/:$//; # to allow pasting of an actual HTTP header from the dump
                         my $value = join ' ', @args;
                         $client->set_header( $header, $value );
                     }
                     else {    # get
-                        printf( "Header: %s: %s\n",
-                            $header, $client->get_header($header) );
+                        print $self->pretty_print( { $header => $client->get_header($header) });
                     }
                 },
             },
