@@ -14,7 +14,7 @@ sub install {
                 desc => 'get/set stash values',
                 minargs => 0,
                 maxargs => 2,
-                args    => [ sub { return [$self->config->keys] } ],
+                args    => [ sub { return [keys %{ $self->stash }] } ],
                 proc    => sub {
                     if(@_ == 1){
                         print $self->pretty_print( { $_[0] => $self->stash($_[0]) } );

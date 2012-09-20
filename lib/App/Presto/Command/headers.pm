@@ -36,9 +36,8 @@ sub install {
             type => {
                 minargs => 1,
                 desc => 'Set content-type header',
-                proc    => sub {
-                    $client->set_header( 'Content-Type', shift );
-                },
+                args => sub { ['application/json','application/x-www-form-urlencoded'] },
+                proc    => sub { $client->set_header( 'Content-Type', shift ) },
             },
             headers => {
                 maxargs => 0,
