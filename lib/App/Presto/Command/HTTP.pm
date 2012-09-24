@@ -3,7 +3,7 @@ BEGIN {
   $App::Presto::Command::HTTP::AUTHORITY = 'cpan:BPHILLIPS';
 }
 {
-  $App::Presto::Command::HTTP::VERSION = '0.004';
+  $App::Presto::Command::HTTP::VERSION = '0.005';
 }
 
 # ABSTRACT: HTTP-related commands
@@ -62,21 +62,31 @@ sub _mk_proc_for {
         if($method =~ m/^P/){
             warn " * no content-type header currently set\n" unless $client->get_header('Content-Type');
         }
+        my $out;
+        if(($out) = $_[-1] =~ /^>(.+)/){
+            pop @_;
+        }
         $client->$method(@_);
-        $self->handle_response($client);
+        $self->handle_response($client, $out);
     }
 }
 
 sub handle_response {
     my $self = shift;
     my $client = shift;
+    my $output_to = shift;
     my $response = $client->response;
     my $config = $self->config;
     if ( $config->get('verbose') ) {
         print _dump_request_response( $response->request, $response );
     }
     if ( $client->has_response_content ) {
-        if ( $config->get('deserialize_response') ) {
+        if($output_to){
+            warn " * sending output to $output_to\n";
+            open(my $out_fh, '>', $output_to) or die "unable to open $output_to for writing: $!";
+            print $out_fh $response->content;
+            close $out_fh or die "unable to close $output_to after writing: $!";
+        } elsif ( $config->get('deserialize_response') ) {
             my $data = $client->response_data;
             print $self->pretty_print($data);
         } elsif ( !$config->get('verbose') ) {    # don't print just the content a second time...
@@ -117,7 +127,7 @@ App::Presto::Command::HTTP - HTTP-related commands
 
 =head1 VERSION
 
-version 0.004
+version 0.005
 
 =head1 AUTHOR
 

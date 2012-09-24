@@ -3,7 +3,7 @@ BEGIN {
   $App::Presto::Config::AUTHORITY = 'cpan:BPHILLIPS';
 }
 {
-  $App::Presto::Config::VERSION = '0.004';
+  $App::Presto::Config::VERSION = '0.005';
 }
 
 # ABSTRACT: Manage configuration for a given endpoint
@@ -146,7 +146,7 @@ App::Presto::Config - Manage configuration for a given endpoint
 
 =head1 VERSION
 
-version 0.004
+version 0.005
 
 =head1 AUTHOR
 

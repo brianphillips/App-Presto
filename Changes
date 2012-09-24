@@ -1,5 +1,7 @@
 Changes file for App-Presto
 
+0.005     2012-09-24 13:28:05 America/Chicago
+
 0.004     2012-09-24 11:41:02 America/Chicago
 
 	- fixed bug with setting the "deserialize_response" config

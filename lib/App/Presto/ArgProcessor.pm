@@ -3,7 +3,7 @@ BEGIN {
   $App::Presto::ArgProcessor::AUTHORITY = 'cpan:BPHILLIPS';
 }
 {
-  $App::Presto::ArgProcessor::VERSION = '0.004';
+  $App::Presto::ArgProcessor::VERSION = '0.005';
 }
 
 # ABSTRACT: Term::ShellUI sub-class
@@ -12,6 +12,7 @@ use strict;
 use warnings;
 use Regexp::Common qw(balanced);
 use Moo;
+use File::Slurp qw(read_file);
 
 has _stash => (
 	is      => 'lazy',
@@ -67,6 +68,9 @@ sub _expand_param {
 		if($dpath){
 			$replacement = _apply_dpath($replacement, $dpath)
 		}
+	} elsif($param =~ m/^FILE($RE{balanced}{-parens => '[]'})/){
+		my $file = substr($1, 1, -1);
+		$replacement = read_file($file);
 	} elsif($param =~ m/^PROMPT($RE{balanced}{-parens => '[]'})($RE{balanced}{-parens => '[]'})?/){
 		my($prompt,$default) = ($1, $2);
 		$replacement = $self->term->readline( substr( $prompt, 1, -1 ) . ' ', ($default ? substr( $default, 1, -1 ) : () ) );
@@ -111,7 +115,7 @@ App::Presto::ArgProcessor - Term::ShellUI sub-class
 
 =head1 VERSION
 
-version 0.004
+version 0.005
 
 =head1 AUTHOR
 
