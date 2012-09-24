@@ -2,6 +2,8 @@ Changes file for App-Presto
 
 {{$NEXT}}
 
+	- fixed bug with setting the "deserialize_response" config
+
 0.003     2012-09-20 16:26:47 America/Chicago
 
 	- better tab completion options for various commands

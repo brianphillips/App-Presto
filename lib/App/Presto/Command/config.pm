@@ -41,7 +41,7 @@ sub install {
                         desc =>
                           'parse response body for better pretty-printing',
                         args => 'boolean, either 0 or 1',
-                        proc => $self->_mk_proc_for_config('verbose'),
+                        proc => $self->_mk_proc_for_config('deserialize_response'),
                         %opts,
                     },
                     pretty_printer => {
