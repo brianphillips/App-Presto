@@ -3,7 +3,7 @@ BEGIN {
   $App::Presto::CommandHasHelp::AUTHORITY = 'cpan:BPHILLIPS';
 }
 {
-  $App::Presto::CommandHasHelp::VERSION = '0.003';
+  $App::Presto::CommandHasHelp::VERSION = '0.004';
 }
 
 # ABSTRACT: Role for command modules that have help defined
@@ -23,7 +23,7 @@ App::Presto::CommandHasHelp - Role for command modules that have help defined
 
 =head1 VERSION
 
-version 0.003
+version 0.004
 
 =head1 AUTHOR
 

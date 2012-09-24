@@ -3,7 +3,7 @@ BEGIN {
   $App::Presto::ArgProcessor::AUTHORITY = 'cpan:BPHILLIPS';
 }
 {
-  $App::Presto::ArgProcessor::VERSION = '0.003';
+  $App::Presto::ArgProcessor::VERSION = '0.004';
 }
 
 # ABSTRACT: Term::ShellUI sub-class
@@ -111,7 +111,7 @@ App::Presto::ArgProcessor - Term::ShellUI sub-class
 
 =head1 VERSION
 
-version 0.003
+version 0.004
 
 =head1 AUTHOR
 

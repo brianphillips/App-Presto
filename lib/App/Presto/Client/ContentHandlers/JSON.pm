@@ -3,7 +3,7 @@ BEGIN {
   $App::Presto::Client::ContentHandlers::JSON::AUTHORITY = 'cpan:BPHILLIPS';
 }
 {
-  $App::Presto::Client::ContentHandlers::JSON::VERSION = '0.003';
+  $App::Presto::Client::ContentHandlers::JSON::VERSION = '0.004';
 }
 
 # ABSTRACT: Handles (de)serializing of JSON requests/responses
@@ -53,7 +53,7 @@ App::Presto::Client::ContentHandlers::JSON - Handles (de)serializing of JSON req
 
 =head1 VERSION
 
-version 0.003
+version 0.004
 
 =head1 AUTHOR
 

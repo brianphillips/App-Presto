@@ -3,7 +3,7 @@ BEGIN {
   $App::Presto::Command::config::AUTHORITY = 'cpan:BPHILLIPS';
 }
 {
-  $App::Presto::Command::config::VERSION = '0.003';
+  $App::Presto::Command::config::VERSION = '0.004';
 }
 
 # ABSTRACT: Config-related commands
@@ -47,7 +47,7 @@ sub install {
                         desc =>
                           'parse response body for better pretty-printing',
                         args => 'boolean, either 0 or 1',
-                        proc => $self->_mk_proc_for_config('verbose'),
+                        proc => $self->_mk_proc_for_config('deserialize_response'),
                         %opts,
                     },
                     pretty_printer => {
@@ -110,7 +110,7 @@ App::Presto::Command::config - Config-related commands
 
 =head1 VERSION
 
-version 0.003
+version 0.004
 
 =head1 AUTHOR
 
