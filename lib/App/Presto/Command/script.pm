@@ -109,13 +109,13 @@ sub _source {
     my $interactive = shift;
 
     if(grep { $script eq $_ } @STACK){
-        print " *** script $script already being run, will not run again\n";
+        warn " *** script $script already being run, will not run again\n";
         return;
     }
 
     my @commands = $self->_script_commands($script);
     if(!@commands){
-        print " *** script $script not found or empty\n";
+        warn " *** script $script not found or empty\n";
         return;
     }
 
