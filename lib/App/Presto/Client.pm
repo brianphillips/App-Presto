@@ -124,7 +124,6 @@ sub response_data {
 				return $h->deserialize( $response->content );
 			}
 		}
-		warn "no available deserializer found for content type: $content_type";
 	}
 	return $response->decoded_content;
 }
