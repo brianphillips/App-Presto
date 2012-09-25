@@ -3,7 +3,7 @@ BEGIN {
   $App::Presto::Client::ContentHandlers::HTML::AUTHORITY = 'cpan:BPHILLIPS';
 }
 {
-  $App::Presto::Client::ContentHandlers::HTML::VERSION = '0.005';
+  $App::Presto::Client::ContentHandlers::HTML::VERSION = '0.006';
 }
 
 # ABSTRACT: Handles deserializing of HTML responses
@@ -44,7 +44,7 @@ App::Presto::Client::ContentHandlers::HTML - Handles deserializing of HTML respo
 
 =head1 VERSION
 
-version 0.005
+version 0.006
 
 =head1 AUTHOR
 

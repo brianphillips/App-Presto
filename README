@@ -2,7 +2,7 @@ NAME
     presto - Command-line interface for RESTful web services
 
 VERSION
-    version 0.005
+    version 0.006
 
 SYNOPSIS
     Invoke from the shell:

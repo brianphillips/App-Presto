@@ -3,7 +3,7 @@ BEGIN {
   $App::Presto::Command::headers::AUTHORITY = 'cpan:BPHILLIPS';
 }
 {
-  $App::Presto::Command::headers::VERSION = '0.005';
+  $App::Presto::Command::headers::VERSION = '0.006';
 }
 
 # ABSTRACT: HTTP header-related commands
@@ -91,7 +91,7 @@ App::Presto::Command::headers - HTTP header-related commands
 
 =head1 VERSION
 
-version 0.005
+version 0.006
 
 =head1 AUTHOR
 

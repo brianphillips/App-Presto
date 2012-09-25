@@ -3,7 +3,7 @@ BEGIN {
   $App::Presto::CommandFactory::AUTHORITY = 'cpan:BPHILLIPS';
 }
 {
-  $App::Presto::CommandFactory::VERSION = '0.005';
+  $App::Presto::CommandFactory::VERSION = '0.006';
 }
 
 # ABSTRACT: Responsible for installing all commands
@@ -45,7 +45,7 @@ App::Presto::CommandFactory - Responsible for installing all commands
 
 =head1 VERSION
 
-version 0.005
+version 0.006
 
 =head1 AUTHOR
 

@@ -3,7 +3,7 @@ BEGIN {
   $App::Presto::Client::AUTHORITY = 'cpan:BPHILLIPS';
 }
 {
-  $App::Presto::Client::VERSION = '0.005';
+  $App::Presto::Client::VERSION = '0.006';
 }
 
 # ABSTRACT: The REST client
@@ -35,14 +35,21 @@ sub all_headers {
 
 sub set_header {
 	my $self = shift;
-	return $self->_rest_client->addHeader(@_);
+	my($name, $value) = @_;
+	return $self->_rest_client->addHeader(lc $name, $value);
 }
 
 sub get_header {
 	my $self    = shift;
-	my $header  = shift;
+	my $header  = lc shift;
 	my $headers = $self->_rest_client->{_headers} || {};
 	return exists $headers->{$header} ? $headers->{$header} : undef;
+}
+
+sub clear_header {
+	my $self = shift;
+	my $name = lc shift;
+	return delete $self->_rest_client->{_headers}->{$name};
 }
 
 sub clear_headers {
@@ -54,19 +61,28 @@ sub clear_headers {
 sub GET {
 	my $self = shift;
 	my $uri  = $self->_make_uri(@_);
-	$self->_rest_client->GET($uri);
+	my $existing_content_type = $self->clear_header('content-type'); # GET shouldn't have a content type
+	my $response = $self->_rest_client->GET($uri);
+	$self->set_header('content-type', $existing_content_type) if $existing_content_type;
+	return $response;
 }
 
 sub HEAD {
 	my $self = shift;
 	my $uri  = $self->_make_uri(@_);
-	$self->_rest_client->HEAD($uri);
+	my $existing_content_type = $self->clear_header('content-type'); # HEAD shouldn't have a content type
+	my $response = $self->_rest_client->HEAD($uri);
+	$self->set_header('content-type', $existing_content_type) if $existing_content_type;
+	return $response;
 }
 
 sub DELETE {
 	my $self = shift;
 	my $uri  = $self->_make_uri(@_);
-	$self->_rest_client->DELETE($uri);
+	my $existing_content_type = $self->clear_header('content-type'); # DELETE shouldn't have a content type
+	my $response = $self->_rest_client->DELETE($uri);
+	$self->set_header('content-type', $existing_content_type) if $existing_content_type;
+	return $response;
 }
 
 sub POST {
@@ -145,7 +161,7 @@ App::Presto::Client - The REST client
 
 =head1 VERSION
 
-version 0.005
+version 0.006
 
 =head1 AUTHOR
 

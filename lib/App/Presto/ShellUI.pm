@@ -3,7 +3,7 @@ BEGIN {
   $App::Presto::ShellUI::AUTHORITY = 'cpan:BPHILLIPS';
 }
 {
-  $App::Presto::ShellUI::VERSION = '0.005';
+  $App::Presto::ShellUI::VERSION = '0.006';
 }
 
 # ABSTRACT: Term::ShellUI sub-class
@@ -57,7 +57,7 @@ App::Presto::ShellUI - Term::ShellUI sub-class
 
 =head1 VERSION
 
-version 0.005
+version 0.006
 
 =head1 AUTHOR
 
