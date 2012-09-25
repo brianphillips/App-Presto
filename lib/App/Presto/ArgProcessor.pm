@@ -24,6 +24,14 @@ sub _build_client {
 	return App::Presto->instance->client;
 }
 
+has config => (
+	is       => 'lazy',
+);
+
+sub _build_config {
+	return App::Presto->instance->config;
+}
+
 has term => (
 	is       => 'lazy',
 );
@@ -64,7 +72,7 @@ sub _expand_param {
 		}
 	} elsif($param =~ m/^FILE($RE{balanced}{-parens => '[]'})($RE{balanced}{-parens => '[]'})?/){
 		my $file = substr($1, 1, -1);
-		my $encoding = $2 ? substr($2, 1, -1) : 'utf8';
+		my $encoding = $2 ? substr($2, 1, -1) : $self->config->get('binmode') || 'utf8';
 		$replacement = read_file( $file, { binmode => ":encoding($encoding)" } );
 	} elsif($param =~ m/^PROMPT($RE{balanced}{-parens => '[]'})($RE{balanced}{-parens => '[]'})?/){
 		my($prompt,$default) = ($1, $2);
