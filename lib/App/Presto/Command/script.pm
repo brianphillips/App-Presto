@@ -55,6 +55,11 @@ sub install {
                 },
                 proc    => sub { $self->_source(@_) },
             },
+            scripts => {
+                desc => 'List all script files available for sourcing',
+                maxargs => 0,
+                proc => sub { print " - $_\n" for @{ $self->scripts }; },
+            },
         }
     );
 }
