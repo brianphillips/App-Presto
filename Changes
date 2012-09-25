@@ -1,6 +1,6 @@
 Changes file for App-Presto
 
-0.005     2012-09-24 21:31:01 America/Chicago
+0.005     2012-09-24 21:47:36 America/Chicago
 
 	- be more intelligent about when we print request/response bodies to STDOUT (avoid if they are binary)
 	- support for $(FILE) slurping as a command argument

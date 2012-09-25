@@ -30,6 +30,14 @@ sub _build_client {
 	return App::Presto->instance->client;
 }
 
+has config => (
+	is       => 'lazy',
+);
+
+sub _build_config {
+	return App::Presto->instance->config;
+}
+
 has term => (
 	is       => 'lazy',
 );

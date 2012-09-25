@@ -28,7 +28,12 @@ Very basic usage:
 
 # DESCRIPTION
 
-`App::Presto` provides a command-line interface (CLI) for RESTful web services.
+`App::Presto` provides a command-line interface (CLI) for RESTful
+web services.  When looking for a way to interact with RESTful services
+answers typically point to some horrible GUI or (on the complete opposite
+end of the spectrum) just using `curl` directly on the command-line.
+This tool attempts to find some sort of middle ground by providing a
+quasi-DSL for interacting with a RESTful service in an interactive way.
 
 # FEATURES
 
@@ -80,15 +85,12 @@ You can also specify additional headers you would like included in the request:
 
 __TODO:__ Implement better support for creating POST/PUT content.
 
-__TODO:__ Warn about missing content-type on PUT/POST if the header isn't
-set. (or auto-detect?)
-
 ## Response Handling
 
 By default, presto will just dump the response body to the screen after
 a request is completed. There are additional options, however:
 
-	# dump full request/response to the screen
+	# dump full request/response to the screen (exactly as transmitted over the wire)
 	http://my-server.com> config verbose 1
 
 	# parse the response according to the content-type and use
@@ -100,10 +102,22 @@ a request is completed. There are additional options, however:
 	http://my-server.com> config pretty_printer JSON
 	http://my-server.com> config pretty_printer Data::Dump
 
+	# send the output to a file (the '>' must not be followed by any white-space!)
+	http://my-server.com> GET /some-image.png >some-image.png
+
 Pretty-printing can be especially helpful for making XML or JSON response
 bodies more human-readable.
 
-__TODO:__ Implement more deserializers and pretty-printers
+When `deserialize_response` is set, if the content-type of the
+response is "text/html", the HTML is automatically stripped with
+[HTML::FormatText::WithLinks](http://search.cpan.org/perldoc?HTML::FormatText::WithLinks) and displayed as formatted text.
+
+If the request or response body is binary (using a simple heuristic
+like the `-B` file-test operator), the output is not printed to STDOUT.
+Instead, you may want to use output redirection as show above and send
+the response body to a file.
+
+	http://my-server.com> GET /some-image.jpg >foo.jpg
 
 ## Persistent Configuration
 
@@ -174,8 +188,6 @@ To replay scripts:
 	# prompt before each command
 	http://my-server.com> source -i my-script
 
-__TODO:__ Allow passing of params to scripts for greater reusability.
-
 ## Variable interpolation
 
 At times (especially when working with scripts) it might be handy to
@@ -222,6 +234,20 @@ the initial value.  An example:
 	# you can also specify initial values
 	http://my-server.com> GET /products 'status=$(PROMPT[Product status:][active])'
 
+You may also specify a local file to use as an argument to a command.  An example:
+
+	http://my-server.com> POST /products $(FILE[my-product.xml])
+
+The file is assumed to be in the same encoding as the `binmode`
+configuration.  If it is using a different character set, you can specify
+that in a second bracketed parameter:
+
+	http://my-server.com> POST /products $(FILE[my-product.xml][latin-1])
+
+The contents of the file will be slurped, decoded and included as an
+argument to the command as if you had typed it on the command-line
+directly.
+
 __TODO:__ Allow data structure references (from `STASH` or even `BODY`)
 to be passed to a POST or PUT command which is then serialized based
 on the content-type of the request before being sent over the wire.
@@ -250,6 +276,17 @@ This feature will work on `$(STASH)` values as well.
 This is beta-quality code and while I use it in my own daily workflow,
 it is likely riddled with horribly obvious bugs and missing functionality
 (let alone undocumented features).
+
+# ACKNOWLEDGEMENTS
+
+Much of this was inspired by [resty](https://github.com/micha/resty)
+which is a rather magic (aka convoluted) set of bash functions (at least
+for this occassional bash programmer).  After attempting to understand
+and enhance [resty](https://github.com/micha/resty), I decided to try
+my hand at creating something a little more perlish.
+
+A big thank you to [Shutterstock](http://www.shutterstock.com) for
+allowing me to work on this on company time and release it to the CPAN.
 
 # AUTHOR
 
