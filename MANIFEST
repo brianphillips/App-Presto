@@ -7,8 +7,6 @@ README
 README.mkdn
 bin/presto
 dist.ini
-foo
-foo.jpg
 lib/App/Presto.pm
 lib/App/Presto/ArgProcessor.pm
 lib/App/Presto/Client.pm

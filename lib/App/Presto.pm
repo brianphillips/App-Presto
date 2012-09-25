@@ -133,17 +133,13 @@ App::Presto - provides CLI for performing REST operations
 
 version 0.005
 
+=head1 SYNOPSIS
+
+All user-facing documentation can be found in L<presto>.
+
 =head1 DESCRIPTION
 
 A L<Term::ShellUI>-based CLI for REST web applications.
-
-=head1 SEE ALSO
-
-=over 4
-
-=item * L<presto>
-
-=back
 
 =head1 AUTHOR
 
