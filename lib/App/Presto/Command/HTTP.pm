@@ -54,25 +54,35 @@ sub _mk_proc_for {
         if($method =~ m/^P/){
             warn " * no content-type header currently set\n" unless $client->get_header('Content-Type');
         }
+        my $out;
+        if(($out) = $_[-1] =~ /^>(.+)/){
+            pop @_;
+        }
         $client->$method(@_);
-        $self->handle_response($client);
+        $self->handle_response($client, $out);
     }
 }
 
 sub handle_response {
     my $self = shift;
     my $client = shift;
+    my $output_to = shift;
     my $response = $client->response;
     my $config = $self->config;
     if ( $config->get('verbose') ) {
         print _dump_request_response( $response->request, $response );
     }
     if ( $client->has_response_content ) {
-        if ( $config->get('deserialize_response') ) {
+        if($output_to){
+            warn " * sending output to $output_to\n";
+            open(my $out_fh, '>', $output_to) or die "unable to open $output_to for writing: $!";
+            print $out_fh $response->content;
+            close $out_fh or die "unable to close $output_to after writing: $!";
+        } elsif ( $config->get('deserialize_response') ) {
             my $data = $client->response_data;
-            print $self->pretty_print($data);
+            print ref $data ? $self->pretty_print($data) : "$data\n";
         } elsif ( !$config->get('verbose') ) {    # don't print just the content a second time...
-            print $response->decoded_content;
+            print readable_content($response);
             print "\n";
         }
     } elsif ( !$config->get('verbose') ) {
@@ -82,13 +92,28 @@ sub handle_response {
 
 sub _dump_request_response {
     my($request,$response) = @_;
-    return sprintf(<<'_OUT_', $request->as_string, $response->as_string);
+    return sprintf(<<'_OUT_', $request->headers->as_string, readable_content($request), $response->headers->as_string, readable_content($response));
 ----- REQUEST  -----
+%s
 %s
 ----- RESPONSE -----
 %s
+%s
 -----   END    -----
 _OUT_
+}
+
+sub readable_content {
+    my $message = shift;
+    return is_human_readable($message) ? $message->decoded_content : sprintf('[ %d bytes of binary data ]', $message->content_length || length($message->decoded_content));
+}
+
+sub is_human_readable {
+    my $message = shift;
+    return $message->content_type =~ m{\b(?:xml|^text|application/json)\b} || do {
+        my $content = substr($message->decoded_content, 0, 1000);
+        $content eq '' || (((my $tmp = $content) =~ tr/[:print:]//) / length($content) > 0.3);
+    };
 }
 
 sub help_categories {
