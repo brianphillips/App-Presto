@@ -24,13 +24,11 @@ sub install {
     $self->term->add_commands(
         {
             form => {
+                desc => "helper for formatting URL-encoded strings",
+                minargs => 1,
+                args => "some-key=some-value",
                 proc => sub {
-                    my @query;
-                    foreach my $kv (@_) {
-                        my ( $k, $v ) = split( /=/, $kv, 2 );
-                        push @query, $k, $v || '';
-                    }
-                    my $uri = $client->_append_query_params( '', @query );
+                    my $uri = $client->_append_query_params( '', @_ );
                     $uri =~ s{^\?}{};
                     print "$uri\n";
                   }
