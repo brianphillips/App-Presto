@@ -12,7 +12,7 @@ sub _build_scripts {
     my $self = shift;
     my $dir = $self->scripts_dir;
     opendir(my $dh, $dir) or die sprintf("unable to open directory %s: %s", $dir, $!);
-    my @files = grep { -f "$dir/$_" } readdir($dh);
+    my @files = grep { -f "$dir/$_" } grep { !/^\./ } readdir($dh);
     closedir($dh);
     return \@files;
 }
