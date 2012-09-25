@@ -96,7 +96,13 @@ You can also specify additional headers you would like included in the request:
 	# view specific header
 	http://my-server.com> header Authorization
 
-B<TODO:> Implement better support for creating POST/PUT content.
+If you are creating form URL-encoded data, a shortcut has been made to avoid having
+to manually URL-encode everything manually:
+
+	http://my-server.com> form foo=bar baz=1,2,3
+
+	# outputs
+	foo=bar&baz=1%2C2%2C3
 
 =head2 Response Handling
 
@@ -297,12 +303,12 @@ it is likely riddled with horribly obvious bugs and missing functionality
 =head1 ACKNOWLEDGEMENTS
 
 Much of this was inspired by L<resty|https://github.com/micha/resty>
-which is a rather magic (aka convoluted) set of bash functions (at least
+which is a rather magical (aka convoluted) set of bash functions (at least
 for this occassional bash programmer).  After attempting to understand
 and enhance L<resty|https://github.com/micha/resty>, I decided to try
 my hand at creating something a little more perlish.
 
-A big thank you to L<Shutterstock|http://www.shutterstock.com> for
+A big thank you to L<Shutterstock Images|http://shutterstock.com> for
 allowing me to work on this on company time and release it to the CPAN.
 
 =head1 AUTHOR
