@@ -2,6 +2,13 @@ Changes file for App-Presto
 
 {{$NEXT}}
 
+	- be more intelligent about when we print request/response bodies to STDOUT (avoid if they are binary)
+	- support for $(FILE) slurping as a command argument
+	- "deserialize" HTML to text when printing to STDOUT
+	- fix broken "form" command
+	- add "scripts" command to list scripts available for sourcing
+	- add support for silent commands in scripts (command is not "echo'd" to STDOUT before executing)
+
 0.004     2012-09-24 11:41:02 America/Chicago
 
 	- fixed bug with setting the "deserialize_response" config

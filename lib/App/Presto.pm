@@ -119,11 +119,8 @@ sub run {
 
 A L<Term::ShellUI>-based CLI for REST web applications.
 
-=head1 SEE ALSO
+=head1 SYNOPSIS
 
-=over 4
+All user-facing documentation can be found in L<presto>.
 
-=item * L<presto>
-
-=back
-
+=cut
