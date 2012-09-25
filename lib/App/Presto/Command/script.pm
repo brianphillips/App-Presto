@@ -121,7 +121,7 @@ sub _source {
 
     push @STACK, $script;
     foreach my $l(@commands){
-        print "$l\n";
+        print "$l\n" unless $l =~ s/^@// && !$interactive;
         if($interactive){
             my $response = $self->term->readline("Execute? (Y/n/a) ");
             if($response && $response =~ m/^n/){
