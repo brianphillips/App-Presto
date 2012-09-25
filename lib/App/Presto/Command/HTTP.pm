@@ -88,9 +88,9 @@ sub handle_response {
             close $out_fh or die "unable to close $output_to after writing: $!";
         } elsif ( $config->get('deserialize_response') ) {
             my $data = $client->response_data;
-            print $self->pretty_print($data);
+            print ref $data ? $self->pretty_print($data) : "$data\n";
         } elsif ( !$config->get('verbose') ) {    # don't print just the content a second time...
-            print $response->decoded_content;
+            print readable_content($response);
             print "\n";
         }
     } elsif ( !$config->get('verbose') ) {
@@ -100,13 +100,28 @@ sub handle_response {
 
 sub _dump_request_response {
     my($request,$response) = @_;
-    return sprintf(<<'_OUT_', $request->as_string, $response->as_string);
+    return sprintf(<<'_OUT_', $request->headers->as_string, readable_content($request), $response->headers->as_string, readable_content($response));
 ----- REQUEST  -----
+%s
 %s
 ----- RESPONSE -----
 %s
+%s
 -----   END    -----
 _OUT_
+}
+
+sub readable_content {
+    my $message = shift;
+    return is_human_readable($message) ? $message->decoded_content : sprintf('[ %d bytes of binary data ]', $message->content_length || length($message->decoded_content));
+}
+
+sub is_human_readable {
+    my $message = shift;
+    return $message->content_type =~ m{\b(?:xml|^text|application/json)\b} || do {
+        my $content = substr($message->decoded_content, 0, 1000);
+        $content eq '' || (((my $tmp = $content) =~ tr/[:print:]//) / length($content) > 0.3);
+    };
 }
 
 sub help_categories {

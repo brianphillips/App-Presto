@@ -68,9 +68,10 @@ sub _expand_param {
 		if($dpath){
 			$replacement = _apply_dpath($replacement, $dpath)
 		}
-	} elsif($param =~ m/^FILE($RE{balanced}{-parens => '[]'})/){
+	} elsif($param =~ m/^FILE($RE{balanced}{-parens => '[]'})($RE{balanced}{-parens => '[]'})?/){
 		my $file = substr($1, 1, -1);
-		$replacement = read_file($file);
+		my $encoding = $2 ? substr($2, 1, -1) : 'utf8';
+		$replacement = read_file( $file, { binmode => ":encoding($encoding)" } );
 	} elsif($param =~ m/^PROMPT($RE{balanced}{-parens => '[]'})($RE{balanced}{-parens => '[]'})?/){
 		my($prompt,$default) = ($1, $2);
 		$replacement = $self->term->readline( substr( $prompt, 1, -1 ) . ' ', ($default ? substr( $default, 1, -1 ) : () ) );

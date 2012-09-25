@@ -115,19 +115,19 @@ sub _source {
     my $interactive = shift;
 
     if(grep { $script eq $_ } @STACK){
-        print " *** script $script already being run, will not run again\n";
+        warn " *** script $script already being run, will not run again\n";
         return;
     }
 
     my @commands = $self->_script_commands($script);
     if(!@commands){
-        print " *** script $script not found or empty\n";
+        warn " *** script $script not found or empty\n";
         return;
     }
 
     push @STACK, $script;
     foreach my $l(@commands){
-        print "$l\n";
+        print "$l\n" unless $l =~ s/^@// && !$interactive;
         if($interactive){
             my $response = $self->term->readline("Execute? (Y/n/a) ");
             if($response && $response =~ m/^n/){
