@@ -2,6 +2,8 @@ Changes file for App-Presto
 
 {{$NEXT}}
 
+0.006     2012-09-27 19:38:39 America/Chicago
+
 	- Don't send Content-Type header on GET/HEAD/DELETE requests
 	- Allow for unsetting HTTP headers
 
