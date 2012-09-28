@@ -51,14 +51,17 @@ sub install {
             },
             header => {
                 desc => 'get/set/list/clear HTTP headers',
+                args => [sub {my %headers = $client->all_headers; return ['--unset','--clear', keys %headers]} ],
                 proc => sub {
                     my $header = shift;
                     my @args   = @_;
                     if ( !$header ) {    # print all
                         my %headers = $client->all_headers;
                         print $self->pretty_print( \%headers );
-                    } elsif ( $header eq '-clear' ) {
+                    } elsif ( $header eq '--clear' ) {
                         $client->clear_headers;
+                    } elsif ( $header eq '--unset' ) {
+                        $client->clear_header($args[0]);
                     } elsif (@args) {      # set
                         $header =~ s/:$//; # to allow pasting of an actual HTTP header from the dump
                         my $value = join ' ', @args;
