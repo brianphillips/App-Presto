@@ -2,6 +2,9 @@ Changes file for App-Presto
 
 {{$NEXT}}
 
+	- Don't send Content-Type header on GET/HEAD/DELETE requests
+	- Allow for unsetting HTTP headers
+
 0.005     2012-09-24 21:52:13 America/Chicago
 
 	- be more intelligent about when we print request/response bodies to STDOUT (avoid if they are binary)
