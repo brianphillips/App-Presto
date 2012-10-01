@@ -92,11 +92,13 @@ sub handle_response {
 
 sub _dump_request_response {
     my($request,$response) = @_;
-    return sprintf(<<'_OUT_', $request->headers->as_string, readable_content($request), $response->headers->as_string, readable_content($response));
+    return sprintf(<<'_OUT_', $request->method, $request->uri->path_query, $request->headers->as_string, readable_content($request), $response->protocol, $response->status_line, $response->headers->as_string, readable_content($response));
 ----- REQUEST  -----
+%s %s
 %s
 %s
 ----- RESPONSE -----
+%s %s
 %s
 %s
 -----   END    -----
