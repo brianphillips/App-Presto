@@ -3,7 +3,7 @@ BEGIN {
   $App::Presto::Command::HTTP::AUTHORITY = 'cpan:BPHILLIPS';
 }
 {
-  $App::Presto::Command::HTTP::VERSION = '0.006';
+  $App::Presto::Command::HTTP::VERSION = '0.007';
 }
 
 # ABSTRACT: HTTP-related commands
@@ -98,11 +98,13 @@ sub handle_response {
 
 sub _dump_request_response {
     my($request,$response) = @_;
-    return sprintf(<<'_OUT_', $request->headers->as_string, readable_content($request), $response->headers->as_string, readable_content($response));
+    return sprintf(<<'_OUT_', $request->method, $request->uri->path_query, $request->headers->as_string, readable_content($request), $response->protocol, $response->status_line, $response->headers->as_string, readable_content($response));
 ----- REQUEST  -----
+%s %s
 %s
 %s
 ----- RESPONSE -----
+%s %s
 %s
 %s
 -----   END    -----
@@ -116,9 +118,10 @@ sub readable_content {
 
 sub is_human_readable {
     my $message = shift;
-    return $message->content_type =~ m{\b(?:xml|^text|application/json)\b} || do {
+    return $message->content_type =~ m{\b(?:xml|^text|application/json|application/x-www-form-urlencoded)\b} || do {
         my $content = substr($message->decoded_content, 0, 1000);
-        $content eq '' || (((my $tmp = $content) =~ tr/[:print:]//) / length($content) > 0.3);
+        my $non_printable =()= $content =~ m/([^[:print:]])/g;
+        $content eq '' || ($non_printable / length($content)) > 0.3;
     };
 }
 
@@ -140,7 +143,7 @@ App::Presto::Command::HTTP - HTTP-related commands
 
 =head1 VERSION
 
-version 0.006
+version 0.007
 
 =head1 AUTHOR
 

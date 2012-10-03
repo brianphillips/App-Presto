@@ -3,7 +3,7 @@ BEGIN {
   $App::Presto::Command::script::AUTHORITY = 'cpan:BPHILLIPS';
 }
 {
-  $App::Presto::Command::script::VERSION = '0.006';
+  $App::Presto::Command::script::VERSION = '0.007';
 }
 
 # ABSTRACT: REST script-related commands
@@ -180,7 +180,7 @@ App::Presto::Command::script - REST script-related commands
 
 =head1 VERSION
 
-version 0.006
+version 0.007
 
 =head1 AUTHOR
 

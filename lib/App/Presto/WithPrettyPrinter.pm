@@ -3,7 +3,7 @@ BEGIN {
   $App::Presto::WithPrettyPrinter::AUTHORITY = 'cpan:BPHILLIPS';
 }
 {
-  $App::Presto::WithPrettyPrinter::VERSION = '0.006';
+  $App::Presto::WithPrettyPrinter::VERSION = '0.007';
 }
 
 # ABSTRACT: Role that provides a pretty-printer
@@ -35,7 +35,7 @@ App::Presto::WithPrettyPrinter - Role that provides a pretty-printer
 
 =head1 VERSION
 
-version 0.006
+version 0.007
 
 =head1 AUTHOR
 
