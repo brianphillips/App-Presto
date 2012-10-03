@@ -112,9 +112,10 @@ sub readable_content {
 
 sub is_human_readable {
     my $message = shift;
-    return $message->content_type =~ m{\b(?:xml|^text|application/json)\b} || do {
+    return $message->content_type =~ m{\b(?:xml|^text|application/json|application/x-www-form-urlencoded)\b} || do {
         my $content = substr($message->decoded_content, 0, 1000);
-        $content eq '' || (((my $tmp = $content) =~ tr/[:print:]//) / length($content) > 0.3);
+        my $non_printable =()= $content =~ m/([^[:print:]])/g;
+        $content eq '' || ($non_printable / length($content)) > 0.3;
     };
 }
 
