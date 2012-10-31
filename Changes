@@ -1,6 +1,7 @@
 Changes file for App-Presto
 
-0.008     2012-10-31 18:44:02 America/Chicago
+0.008     2012-10-31 18:46:15 America/Chicago
+	- fix bug with appending extra params + path suffix
 
 0.007     2012-10-02 20:47:14 America/Chicago
 	- add initial request line to request dumping (i.e. GET /foo)
