@@ -38,6 +38,15 @@ $client->PUT('/bar', 'foobar');
 	is $args->[2], 'foobar', 'PUT body';
 }
 
+$config->set_always( endpoint => 'http://my-server.com*.json');
+$client->PUT('/bar?blah=1', 'foobar');
+{
+	my ( $m, $args ) = $rest_client->next_call;
+	is $m, 'PUT', 'rest_client PUT';
+	is $args->[1], 'http://my-server.com/bar.json?blah=1', 'has suffix + query params';
+}
+$config->set_always( endpoint => 'http://my-server.com');
+
 $client->HEAD;
 {
 	my ( $m, $args ) = $rest_client->next_call;

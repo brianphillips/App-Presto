@@ -99,12 +99,15 @@ sub _make_uri {
 
 	my $endpoint;
 	$local_uri = '/' if ! defined $local_uri;
-	if ( $local_uri =~ m{^https?://} ) {
+	$local_uri = URI->new($local_uri);
+	if ( $local_uri->scheme ) {
 		$endpoint = $local_uri;
 	} else {
+		my $local_path = $local_uri->path;
 		$endpoint = $config->endpoint;
 		$endpoint .= '*' unless $endpoint =~ m/\*/;
-		$endpoint =~ s{\*}{$local_uri};
+		$endpoint =~ s{\*}{$local_path};
+		$endpoint .= '?' . $local_uri->query if $local_uri->query;
 	}
 
 	my $u = $self->_append_query_params( $endpoint, @args );
@@ -113,8 +116,8 @@ sub _make_uri {
 
 sub _append_query_params {
 	my $self = shift;
-	my @args = @_;
 	my $u    = URI->new(shift);
+	my @args = @_;
 	foreach my $next (@args) {
 		$u->query_param_append( split( /=/, $next, 2 ) );
 	}
