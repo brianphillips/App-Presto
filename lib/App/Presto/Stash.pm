@@ -3,7 +3,7 @@ BEGIN {
   $App::Presto::Stash::AUTHORITY = 'cpan:BPHILLIPS';
 }
 {
-  $App::Presto::Stash::VERSION = '0.007';
+  $App::Presto::Stash::VERSION = '0.008';
 }
 
 # ABSTRACT: Presto stash
@@ -51,7 +51,7 @@ App::Presto::Stash - Presto stash
 
 =head1 VERSION
 
-version 0.007
+version 0.008
 
 =head1 AUTHOR
 

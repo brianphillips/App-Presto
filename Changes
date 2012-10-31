@@ -1,5 +1,7 @@
 Changes file for App-Presto
 
+0.008     2012-10-31 18:44:02 America/Chicago
+
 0.007     2012-10-02 20:47:14 America/Chicago
 	- add initial request line to request dumping (i.e. GET /foo)
 	- add HTTP response code to response dumping
