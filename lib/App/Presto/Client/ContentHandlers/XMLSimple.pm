@@ -3,7 +3,7 @@ BEGIN {
   $App::Presto::Client::ContentHandlers::XMLSimple::AUTHORITY = 'cpan:BPHILLIPS';
 }
 {
-  $App::Presto::Client::ContentHandlers::XMLSimple::VERSION = '0.008';
+  $App::Presto::Client::ContentHandlers::XMLSimple::VERSION = '0.009';
 }
 
 # ABSTRACT: Handles (de)serializing of XML requests/responses
@@ -54,7 +54,7 @@ App::Presto::Client::ContentHandlers::XMLSimple - Handles (de)serializing of XML
 
 =head1 VERSION
 
-version 0.008
+version 0.009
 
 =head1 AUTHOR
 

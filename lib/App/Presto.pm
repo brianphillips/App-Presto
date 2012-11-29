@@ -3,7 +3,7 @@ BEGIN {
   $App::Presto::AUTHORITY = 'cpan:BPHILLIPS';
 }
 {
-  $App::Presto::VERSION = '0.008';
+  $App::Presto::VERSION = '0.009';
 }
 
 # ABSTRACT: provides CLI for performing REST operations
@@ -131,7 +131,7 @@ App::Presto - provides CLI for performing REST operations
 
 =head1 VERSION
 
-version 0.008
+version 0.009
 
 =head1 SYNOPSIS
 

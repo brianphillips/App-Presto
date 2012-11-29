@@ -41,5 +41,5 @@ requires:
   warnings: 0
 resources:
   repository: https://github.com/brianphillips/App-Presto.git
-version: 0.008
+version: 0.009
 x_authority: cpan:BPHILLIPS

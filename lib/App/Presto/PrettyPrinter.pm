@@ -3,7 +3,7 @@ BEGIN {
   $App::Presto::PrettyPrinter::AUTHORITY = 'cpan:BPHILLIPS';
 }
 {
-  $App::Presto::PrettyPrinter::VERSION = '0.008';
+  $App::Presto::PrettyPrinter::VERSION = '0.009';
 }
 
 # ABSTRACT: abstracted pretty-printer support
@@ -53,7 +53,7 @@ App::Presto::PrettyPrinter - abstracted pretty-printer support
 
 =head1 VERSION
 
-version 0.008
+version 0.009
 
 =head1 AUTHOR
 
