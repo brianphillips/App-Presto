@@ -72,10 +72,8 @@ sub HEAD {
 
 sub DELETE {
 	my $self = shift;
-	my $uri  = $self->_make_uri(@_);
-	my $existing_content_type = $self->clear_header('content-type'); # DELETE shouldn't have a content type
-	my $response = $self->_rest_client->DELETE($uri);
-	$self->set_header('content-type', $existing_content_type) if $existing_content_type;
+	my $uri  = $self->_make_uri(shift);
+	my $response = $self->_rest_client->request('DELETE',$uri, shift);
 	return $response;
 }
 
