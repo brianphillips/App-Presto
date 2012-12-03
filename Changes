@@ -1,6 +1,6 @@
 Changes file for App-Presto
 
-0.009     2012-12-03 09:30:20 America/Chicago
+0.009     2012-12-03 09:39:12 America/Chicago
 	- use HTTP::Message to dump request/response when in verbose mode
 	- Allow DELETE requests to have a body
 

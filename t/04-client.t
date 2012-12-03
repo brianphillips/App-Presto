@@ -7,7 +7,7 @@ use App::Presto::Client;
 my $config = Test::MockObject->new;
 $config->set_always( endpoint => 'http://my-server.com');
 my $rest_client = Test::MockObject->new;
-$rest_client->set_true('GET','DELETE','PUT','POST','HEAD');
+$rest_client->set_true('GET','DELETE','PUT','POST','HEAD','request');
 
 my %headers;
 $rest_client->mock('addHeader', sub { shift; my($k,$v) = @_; $headers{$k} = $v; });
@@ -27,8 +27,8 @@ $client->GET('/foo');
 $client->DELETE('http://another-server.com/blah');
 {
 	my ( $m, $args ) = $rest_client->next_call;
-	is $m, 'DELETE', 'rest_client DELETE';
-	is $args->[1], 'http://another-server.com/blah', 'allows URI override';
+	is $m, 'request', 'rest_client request';
+	is $args->[2], 'http://another-server.com/blah', 'allows URI override';
 }
 
 $client->PUT('/bar', 'foobar');
