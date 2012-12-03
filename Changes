@@ -2,6 +2,10 @@ Changes file for App-Presto
 
 {{$NEXT}}
 
+0.009     2012-12-03 09:39:12 America/Chicago
+	- use HTTP::Message to dump request/response when in verbose mode
+	- Allow DELETE requests to have a body
+
 0.008     2012-10-31 18:48:59 America/Chicago
 	- fix bug with appending extra params + path suffix
 
