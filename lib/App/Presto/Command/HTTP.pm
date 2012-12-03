@@ -99,9 +99,9 @@ sub handle_response {
 sub _dump_request_response {
     my($request,$response) = @_;
     print "----- REQUEST -----\n";
-    $request->dump;
+    print $request->dump;
     print "----- RESPONSE -----\n";
-    $response->dump;
+    print $response->dump;
     print "----- END -----\n";
 }
 
